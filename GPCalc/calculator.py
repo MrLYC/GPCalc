@@ -30,7 +30,11 @@ class Supporter(object):
     @classmethod
     def __listarg(cls, func):
         def _(*arg, **kw):
-            return func(arg, **kw)
+            lst = []
+            for a in arg:
+                if isinstance(a, (tuple, list)):lst.extend(a)
+                else:lst.append(a)
+            return func(lst, **kw)
 
         return _
 
