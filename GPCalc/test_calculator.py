@@ -51,6 +51,7 @@ def test_simple_exp(Calculator_Eval):
 
         ("5*6+81/23%74*2^8", 931.5652173913044),
         ("2 * 3^2 + 2 / 3mod 2 - 1", 19),
+        ("-.12345+54321*123/321^2mod(sum([-1+10^2*sin(cos(tan(100))),arcsin(-1+1-1),log(100,10)*log10(1000)/ln(exp(1)),cuberoot(sqrt(fact(10)*mod(5,3)))*yroot(5,2),avg([3,4,5,6]),sum([987,253])*var([1,11,111,1111])/stdev([123,321,456,654,789,987])]))", 64.71950571665647)
     )
 
     assert is_equal(Calculator_Eval("pow($e, 3.8)"), Calculator_Eval("$e^3.8"))
