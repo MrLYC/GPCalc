@@ -11,30 +11,22 @@ from re import compile
 from expelement import ElementTypeEnum, Element
 
 def pretokens(exp):
+    """利用generate_tokens进行预处理"""
     return (tk[1] for tk in generate_tokens(StringIO(exp).readline))
-
-class GrayStateException(Exception):
-    def __init__(self, msg = "tokens state error because of error expression."):
-        super(GrayStateException, self).__init__(msg)
-
-class GrayStateInitException(Exception):
-    def __init__(self, msg = "tokens init error because of error expression."):
-        super(GrayStateInitException, self).__init__(msg)
-
-class GrayStateEndException(Exception):
-    def __init__(self, msg = "tokens finished error because of error expression."):
-        super(GrayStateEndException, self).__init__(msg)
 
 class GrayToken(object):
     def __init__(self, exp):
 
-        self.context = deque(pretokens(exp))
+        try:self.context = deque(pretokens(exp))
+        except:raise Exception("unrecognizable expression")
+
         self.tokens = []
         self.state = self.init_state
         self.done = None
 
     def _try_append(self, tokentype, tk):
-        val = tokentype(tk)
+        """如果一个标识符符合给定的类型模式,则包装成指定类型的元素"""
+        val = tokentype(tk)#返回符合模式的部分
         if val != None:
             self.tokens.append(Element(val, tokentype))
             return True
@@ -54,7 +46,7 @@ class GrayToken(object):
             self.state = self.next_state
 
         else:
-            raise GrayStateException()
+            raise Exception("tokens state error because of error expression")
 
     def next_state(self, tk):
         if self._try_append(ElementTypeEnum.CMM, tk):
@@ -70,7 +62,7 @@ class GrayToken(object):
             self.end_state()
 
         else:
-            raise GrayStateException()
+            raise Exception("tokens state error because of error expression")
 
     def end_state(self):
         self.tokens = tuple(self.tokens)
@@ -79,10 +71,11 @@ class GrayToken(object):
     def __call__(self):
         if self.done == None:
             self.done = False
+            #转移状态直至到达终态
             while self.context:
                 tk = self.context.popleft()
                 self.state(tk)
                 if self.done:break
             else:
-                raise GrayStateEndException()
+                raise Exception("tokens finished error because of error expression")
         return self.tokens

@@ -13,7 +13,6 @@ class YCTools(object):
         """替换默认raw_input以应用stdin"""
         #sys.stdout.write(msg)
         txt = sys.stdin.readline()
-        #print txt
         return txt[:-1]
 
     @classmethod
@@ -24,7 +23,7 @@ class YCTools(object):
 
     @classmethod
     def buildins(cls):
-        """替换__builtins__"""
+        """替换__builtins__,防止注入"""
         return None
 
 class YCPYBase(object):

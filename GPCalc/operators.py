@@ -7,7 +7,7 @@ import re
 
 class OPLEVEL(object):
     """
-    优先级
+    运算符优先级与权值
     """
     LBK = 00,
     CMM = 10,

@@ -15,7 +15,7 @@ class ElementType(object):
         self.regex = re.compile(pattern)
 
     def __call__(self, obj_str):
-        match = self.regex.search(obj_str)
+        match = self.regex.search(obj_str)#使用对应的regex来匹配
         if match:return match.group()
         return None
 
