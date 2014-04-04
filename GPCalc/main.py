@@ -7,6 +7,33 @@ import sys
 from calculator import Calculator
 
 def by_input():
+    print """
+=================== Info =====================
+GPClac v0.1 created by LYC built on 03/04/2014
+
+    Help for GPCalc
+GPCalc can evaluate expression strings from
+stdin or start up arguments.
+Welcome to visit and get the detail documents
+on: https://git.oschina.net/Mr_LYC/GPCalc/
+
+    Features
+Evaluation:
+    fact(100) / 2
+
+Define a var:
+    $varname:expression
+    You can use your var like $varname in your
+    expression later.
+
+Solve an equation:
+    1 + 2 * $$ = 3 / 4
+    $$ is representing the unknown number.
+
+Hope you to enjoy it!
+"""
+
+
     calc = Calculator()
     while True:
         exp = raw_input("> ")
@@ -20,7 +47,7 @@ def by_input():
             err = "\n".join([str(i) for i in info]) + "\n"
         if err:
             e = err.split("\n")
-            print "===== err ====="
+            print "==================== error ===================="
             print e[1]
             print ""
 

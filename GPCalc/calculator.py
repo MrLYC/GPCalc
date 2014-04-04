@@ -190,6 +190,7 @@ class Calculator(object):
         self.save_var("$$", 1j)
         r, e = self.eval(exp)
         r = -r.real/r.imag
+        self.save_var("$ans", r)
         self.save_var("$$", r)
         return r, e
 
