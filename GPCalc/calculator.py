@@ -30,7 +30,7 @@ class Supporter(object):
     @classmethod
     def __listarg(cls, func):
         def _(*arg, **kw):
-            return func(Supporter.__tuple(*arg), **kw)
+            return func(Supporter.__tuple(arg), **kw)
 
         return _
 
@@ -118,11 +118,11 @@ class Supporter(object):
         return math.sqrt(Supporter.__varp(l))
 
     @staticmethod
-    def __tuple(*arg):
+    def __tuple(arg):
         arr = []
         for e in arg:
             if isinstance(e, (list, tuple)):
-                arr.extend(e)
+                arr.extend(Supporter.__tuple(e))
             else:arr.append(e)
         return tuple(arr)
 
