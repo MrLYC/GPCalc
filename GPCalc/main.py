@@ -24,26 +24,26 @@ def by_input():
             print e[1]
             print ""
 
-def quick_calc(exp, calc):
-    try:
-        r, err = calc.xrun(exp)
-        if r != None:print "$ans:", r
-    except:
-        info = sys.exc_info()
-        err = "\n".join([str(i) for i in info]) + "\n"
-    if err:
-        e = err.split("\n")
-        print "===== err ====="
-        print e[1]
-        print ""
+def quick_calc(exps):
+    calc = Calculator()
+    for exp in exps:
+        try:
+            r, err = calc.xrun(exp)
+            if r != None:print "$ans:", r
+        except:
+            info = sys.exc_info()
+            err = "\n".join([str(i) for i in info]) + "\n"
+        if err:
+            e = err.split("\n")
+            print "===== err ====="
+            print e[1]
+            print ""
 
 def main(argv):
     if len(argv) == 1:
         by_input()
     else:
-        calc = Calculator()
-        for exp in argv[1:]:
-            quick_calc(exp, calc)
+        quick_calc(argv[1:])
 
 if __name__ == '__main__':
     main(sys.argv)

@@ -30,11 +30,7 @@ class Supporter(object):
     @classmethod
     def __listarg(cls, func):
         def _(*arg, **kw):
-            lst = []
-            for a in arg:
-                if isinstance(a, (tuple, list)):lst.extend(a)
-                else:lst.append(a)
-            return func(lst, **kw)
+            return func(Supporter.__array(*arg), **kw)
 
         return _
 
@@ -66,19 +62,19 @@ class Supporter(object):
         "cuberoot": cls.__cuberoot,
         "yroot": cls.__yroot,
 
-        "avg": Supporter.__listarg(cls.__avg),
-        "sum": Supporter.__listarg(sum),
-        "var": Supporter.__listarg(cls.__var),
-        "stdev": Supporter.__listarg(cls.__stdev),
-        "varp": Supporter.__listarg(cls.__varp),
-        "stdevp": Supporter.__listarg(cls.__stdevp),
+        "avg": cls.__listarg(cls.__avg),
+        "sum": cls.__listarg(sum),
+        "var": cls.__listarg(cls.__var),
+        "stdev": cls.__listarg(cls.__stdev),
+        "varp": cls.__listarg(cls.__varp),
+        "stdevp": cls.__listarg(cls.__stdevp),
 
         "_e": math.e,
         "_pi": math.pi,
 
         "num": Decimal,
 
-        "array": cls.__array,
+        "tuple": cls.__array,
     }
 
     @staticmethod
@@ -127,7 +123,7 @@ class Supporter(object):
         arr = []
         for e in arg:
             if isinstance(e, (list, tuple)):
-                arr.extend(Supporter.__array(e))
+                arr.extend(e)
             else:arr.append(e)
         return tuple(arr)
 

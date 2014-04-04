@@ -68,7 +68,7 @@ class UnaryOperator(Operator):
         super(UnaryOperator, self).__init__(original, OPLEVEL.UOP, 1)
 
     def __call__(self, operand):
-        return "%s(%s)" % (self.original, str(operand))
+        return "(%s(%s))" % (self.original, str(operand))
 
 
 class BinaryOperator(Operator):
@@ -79,14 +79,14 @@ class BinaryOperator(Operator):
         super(BinaryOperator, self).__init__(original, level, 2)
 
     def __call__(self, operand1, operand2):
-        return "(%s %s %s)" % (str(operand1), self.original, str(operand2))
+        return "((%s) %s (%s))" % (str(operand1), self.original, str(operand2))
 
 class ListOperator(BinaryOperator):
     """
     列表运算符
     """
     def __call__(self, operand1, operand2):
-        return "%s %s %s" % (str(operand1), self.original, str(operand2))
+        return "%s, %s" % (str(operand1), str(operand2))
 
 def operator_factory(original, unary = False):
     """
