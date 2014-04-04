@@ -1,0 +1,87 @@
+﻿# coding: UTF-8
+# Name:表达式的Tokenizer
+# Author: LYC
+# Created: 2014-03-28
+
+import graytokenizer
+from expelement import ElementTypeEnum
+import operators
+
+class Convertor(object):
+    """
+    转换器
+    """
+    @staticmethod
+    def __replace(tk):
+        """替换"""
+        if tk.type == ElementTypeEnum.NUM:
+            #注入点,可改为Decimal
+            if tk.value.find("j") == -1:tk.value = float(tk.value)
+            else:tk.value = complex(tk.value) #此项支持复数
+
+        elif tk.type != ElementTypeEnum.VAR:
+            if tk.type == ElementTypeEnum.LBK:
+                tk.value = "("
+            elif tk.type == ElementTypeEnum.RBK:
+                tk.value = ")"
+            if tk.type == ElementTypeEnum.UOP:tk.value = operators.operator_factory(tk.value, True)
+            else:tk.value = operators.operator_factory(tk.value)
+
+        return tk
+#-------------------------------------------------------------------------------
+
+    @staticmethod
+    def preprocessing(exp):
+        """预处理"""
+        exp = exp.strip()
+        exp = exp.lower()
+        exp = exp.replace("$", "_")
+        return exp
+
+    @staticmethod
+    def tokenize(exp):
+        """获取标记"""
+        gtk = graytokenizer.GrayToken(exp)
+        return map(Convertor.__replace, gtk())
+
+
+    @staticmethod
+    def topostfix(tokens):
+        """转为后缀表达式"""
+        postfix = []
+        op_stack = []
+
+        for tk in tokens:
+            if tk.type == ElementTypeEnum.NUM or tk.type == ElementTypeEnum.VAR:postfix.append(tk)
+            elif tk.type == ElementTypeEnum.BOP:
+                while op_stack:
+                    os_tk = op_stack[-1]
+                    if os_tk.value >= tk.value :postfix.append(op_stack.pop())
+                    else:break
+                op_stack.append(tk)
+            else:
+                if tk.type in (ElementTypeEnum.UOP, ElementTypeEnum.LBK):
+                    op_stack.append(tk)
+                elif tk.type == ElementTypeEnum.RBK:
+                    while op_stack:
+                        os_tk = op_stack.pop()
+                        if os_tk.type == ElementTypeEnum.LBK:break
+                        postfix.append(os_tk)
+                    else:raise ValueError("error expression.")
+                elif tk.type == ElementTypeEnum.CMM:
+                    while op_stack:
+                        os_tk = op_stack[-1]
+                        if os_tk.type == ElementTypeEnum.LBK:break
+                        postfix.append(op_stack.pop())
+                    else:raise ValueError("error expression.")
+                    op_stack.append(tk)
+        else:postfix += op_stack[::-1]
+
+        return postfix
+
+    @staticmethod
+    def format(exp):
+        exp = Convertor.preprocessing(exp)
+        gtk = Convertor.tokenize(exp)
+        postfix = Convertor.topostfix(gtk)
+        return postfix
