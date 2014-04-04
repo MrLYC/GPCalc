@@ -7,6 +7,7 @@ import sys
 from calculator import Calculator
 
 def by_input():
+    """输入表达式"""
     print """
 =================== Info =====================
 GPClac v0.1 created by LYC built on 03/04/2014
@@ -38,8 +39,10 @@ Hope you to enjoy it!
     while True:
         exp = raw_input("> ")
         if not exp:break
+        #错误信息
         err = None
         try:
+            #智能执行并返回结果和错误信息
             r, err = calc.xrun(exp)
             if r != None:print "$ans:", r
         except:
@@ -48,7 +51,7 @@ Hope you to enjoy it!
         if err:
             e = err.split("\n")
             print "==================== error ===================="
-            print e[1]
+            print e[1] #只输出错误信息
             print ""
 
 def quick_calc(exps):
