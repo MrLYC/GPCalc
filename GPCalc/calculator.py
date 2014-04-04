@@ -30,7 +30,7 @@ class Supporter(object):
     @classmethod
     def __listarg(cls, func):
         def _(*arg, **kw):
-            return func(Supporter.__array(*arg), **kw)
+            return func(Supporter.__tuple(*arg), **kw)
 
         return _
 
@@ -74,7 +74,7 @@ class Supporter(object):
 
         "num": Decimal,
 
-        "tuple": cls.__array,
+        "tuple": cls.__tuple,
     }
 
     @staticmethod
@@ -117,9 +117,8 @@ class Supporter(object):
     def __stdevp(l):
         return math.sqrt(Supporter.__varp(l))
 
-
     @staticmethod
-    def __array(*arg):
+    def __tuple(*arg):
         arr = []
         for e in arg:
             if isinstance(e, (list, tuple)):

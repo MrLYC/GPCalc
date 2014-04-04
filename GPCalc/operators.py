@@ -86,6 +86,7 @@ class ListOperator(BinaryOperator):
     列表运算符
     """
     def __call__(self, operand1, operand2):
+
         return "%s, %s" % (str(operand1), str(operand2))
 
 def operator_factory(original, unary = False):
