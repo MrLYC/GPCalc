@@ -18,9 +18,7 @@ class Supporter(object):
 
     @classmethod
     def GetApis(cls):
-        """
-        返回Api字典
-        """
+        """返回Api字典"""
         apis = {}
 
         apis.update(cls.__math_apis())
@@ -176,17 +174,21 @@ class Calculator(object):
         #参考:http://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95
         for tk in fmt_tks:
             if tk.type == ElementTypeEnum.NUM or tk.type == ElementTypeEnum.VAR:
+                #数字和变量直接入栈
                 stack.append(str(tk.value))
             elif isinstance(tk.value, operators.Operator):
-                if len(stack) < tk.value.opnum:raise Exception("not enough operand")
-                args = tuple((stack.pop() for i in xrange(tk.value.opnum)))[::-1]
-                stack.append(tk.value(*args))
+                #运算符则出栈opnum(可操作数目)个操作数进行转换
+                n = tk.value.opnum
+
+                if len(stack) < n:raise Exception("not enough operand")
+
+                args = (stack.pop(i-n) for i in xrange(n)) if n else []
+                stack.append(tk.value(*tuple(args)))
 
         l = len(stack)
         if l < 1:raise Exception("this is a bug, send it to saber000@vip.qq.com please.")
         elif l == 1:return stack[-1]
         else:raise Exception("unnecessary operand found")
-
 
     def save_var(self, var, val):
         if var.startswith("$"):
@@ -204,14 +206,16 @@ class Calculator(object):
             i = exp.find(":")
             var = exp[:i]#预计的变量名
             exp = exp[i+1:]#变量的表达式
-            m_var = re.search("(\$\w+)", var)
+            m_var = re.search("^\s*(\$\w+)\s*$", var)
+
             if m_var:#确保是正确的命名以防被注入
                 res, err = self.eval(exp)
                 self.save_var(m_var.groups()[0], res)
-            else:
-                raise Exception("illegal var name")
+            else:raise Exception("illegal var name of %s" % var)
+
         elif exp.find("=") != -1:#求解方程
             res, err = self.equation(exp)
+
         else:#普通表达式
             res, err = self.eval(exp)
         return res, err
