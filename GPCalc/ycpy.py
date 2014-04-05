@@ -91,15 +91,15 @@ class YCPY(YCPYBase):
     def __init__(self, apis = {}, **kw):
         """apis是个字典,会添加进虚拟运行环境,也可用kw达到相同功能"""
         #默认对以下流做重定向
-        self.add_apis = {
+        self.api_dct = {
             "__builtins__": YCTools.buildins(),
         }
 
         self.stdin = StringIO.StringIO()
         self.stdout = StringIO.StringIO()
         self.stderr = StringIO.StringIO()
-        self.add_apis.update(apis)
-        self.add_apis.update(kw)
+        self.api_dct.update(apis)
+        self.api_dct.update(kw)
 
         super(YCPY,self).__init__(self.stdin, self.stdout, self.stderr)
 
@@ -108,7 +108,7 @@ class YCPY(YCPYBase):
     def init(self):
         """初始化运行环境"""
         super(YCPY, self).init()
-        self.Environment.update(self.add_apis)
+        self.Environment.update(self.api_dct)
 
     def __set_stdin(self, input_list):
         """将输入列表写进stdin"""

@@ -64,9 +64,9 @@ def test_simple_exp(Calculator_Eval):
         ("-sin(-+2)", 0.90929742682568),
     )
 
-    assert is_equal(Calculator_Eval("pow($e, 3.8)"), Calculator_Eval("$e^3.8"))
-    assert is_equal(Calculator_Eval("pow($e, 3.8)"), Calculator_Eval("exp(3.8)"))
-    assert is_equal(Calculator_Eval("mod($pi, $e)"), Calculator_Eval("$pi mod $e"))
+    assert is_equal(Calculator_Eval("pow($$e, 3.8)"), Calculator_Eval("$$e^3.8"))
+    assert is_equal(Calculator_Eval("pow($$e, 3.8)"), Calculator_Eval("exp(3.8)"))
+    assert is_equal(Calculator_Eval("mod($$pi, $$e)"), Calculator_Eval("$$pi mod $$e"))
 
     for e, r in test:
         assert is_equal(Calculator_Eval(e), r, e)
