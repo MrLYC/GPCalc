@@ -228,7 +228,7 @@ class Calculator(object):
             i = exp.find(":")
             var = exp[:i]#预计的变量名
             exp = exp[i+1:]#变量的表达式
-            m_var = re.search("^\s*(\$[a-z_]+\d*)\s*$", var)
+            m_var = re.search("^\s*(\$[a-z]+\d*)\s*$", var)
 
             if m_var:#确保是正确的命名以防被注入
                 res, out, err = self.eval(exp)
