@@ -11,7 +11,7 @@ import calculator
 def Calculator_Eval():
     calc = calculator.Calculator()
     def _(exp):
-        r, e = calc.eval(exp)
+        r, o, e = calc.eval(exp)
         return r
     return _
 
@@ -19,7 +19,7 @@ def Calculator_Eval():
 def Calculator_Xrun():
     calc = calculator.Calculator()
     def _(exp):
-        r, e = calc.xrun(exp)
+        r, o, e = calc.xrun(exp)
         return r
     return _
 
@@ -29,7 +29,7 @@ def is_equal(a, b, *arg):
 
 def test_simple_exp(Calculator_Eval):
     test = (
-        ("2014-03-26", 1985),
+        ("2014-3-26", 1985),
         ("1991", 1991),
 
         ("sin(1.952)", 0.9282174959159),
@@ -81,6 +81,21 @@ def test_mod_operator(Calculator_Eval):
     assert is_equal(Calculator_Eval("4 mod 5 mod 3"), 1)
     assert is_equal(Calculator_Eval("4 mod pow(2,3) mod 3"), 1)
 
+def test_spcial_num(Calculator_Xrun):
+    case = (
+        ("-(5+1j)", -1j-5),
+        ("5*7 mod 7 +5j", 5j),
+        ("3*8/6j", -4j),
+        ("(1-5j)+(1+5j)", 2),
+        ("5j**2", -25),
+        ("8*2j/2j", 8),
+
+        ("0x7c+0x270+158+051", 957),
+    )
+
+    for e, r in case:
+        assert is_equal(Calculator_Xrun(e), r, e)
+
 def test_tuple(Calculator_Xrun):
     case = (
         ("(3,4)", "([3,4])"),
@@ -106,6 +121,7 @@ def test_tuple(Calculator_Xrun):
         ("stdevp(3,4)", "stdevp([3,4])"),
         ("stdevp $x", "stdevp(3,4)"),
         ("$x:tuple(2)", "$ans"),
+        ("sin 2", "sin(2)"),
         ("sin(2)", "sin((2))"),
         ("sin $x", "sin($x)"),
         ("cos(2)", "cos((2))"),
@@ -148,6 +164,8 @@ def test_tuple(Calculator_Xrun):
         ("stdev $x", "stdev($x)"),
         ("stdevp(2)", "stdevp((2))"),
         ("stdevp $x", "stdevp($x)"),
+
+        ("cell(1,2.2,3.8)", "(1,2,3)"),
 
         ("(1,2)", "[1,2]"),
         ("$x:$ans", "(1,2)"),

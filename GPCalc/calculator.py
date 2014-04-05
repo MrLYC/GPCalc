@@ -94,6 +94,8 @@ class Supporter(object):
         """扩展函数"""
         return {
         "tuple": cls.tuple,
+        "val": cls.__args2list(cls.__val),
+        "cell": cls.__args2list(cls.__int),
         }
 
     @staticmethod
@@ -143,6 +145,21 @@ class Supporter(object):
     def __stdevp(l):
         """集合的总体标准偏差"""
         return math.sqrt(Supporter.__varp(l))
+
+    @staticmethod
+    def __val(n):
+        """各种进制下的整型表示方式"""
+        n = map(int, n)
+        print "Dec: (%s)" % ",".join(map(str, n))
+        print "Hex: (%s)" % ",".join(map(lambda n: str(hex(n)), n))
+        print "Oct: (%s)" % ",".join(map(lambda n: str(oct(n)), n))
+        print "Bin: (%s)" % ",".join(map(lambda n: str(bin(n)), n))
+        return Supporter.__int(n)
+
+    @staticmethod
+    def __int(n):
+        """取整"""
+        return tuple(map(lambda i:float(int(i)), n))
 
     @staticmethod
     def tuple(arg):
@@ -201,24 +218,25 @@ class Calculator(object):
 
     def xrun(self, exp):
         res = None
-        err = None
+        err = ""
+        out = ""
         if exp.find(":") != -1:#变量声明
             i = exp.find(":")
             var = exp[:i]#预计的变量名
             exp = exp[i+1:]#变量的表达式
-            m_var = re.search("^\s*(\$\w+)\s*$", var)
+            m_var = re.search("^\s*(\$[a-z_]+\d*)\s*$", var)
 
             if m_var:#确保是正确的命名以防被注入
-                res, err = self.eval(exp)
+                res, out, err = self.eval(exp)
                 self.save_var(m_var.groups()[0], res)
             else:raise Exception("illegal var name of %s" % var)
 
         elif exp.find("=") != -1:#求解方程
-            res, err = self.equation(exp)
+            res, out, err = self.equation(exp)
 
         else:#普通表达式
-            res, err = self.eval(exp)
-        return res, err
+            res, out, err = self.eval(exp)
+        return res, out, err
 
     def eval(self, exp, *arg):
         exp = self.format_exp(exp)#转换成等价的Python表达式
@@ -228,7 +246,7 @@ class Calculator(object):
             r = Supporter.tuple(r)
 
         self.save_var("$ans", r)#保存结果
-        return r, e
+        return r, o, e
 
     def equation(self, exp):
         #利用Python的暗黑魔法来求解
@@ -241,12 +259,12 @@ class Calculator(object):
         e1, e2 = exp.split("=")
         exp = "(%s)-(%s)" % (e1, e2)
         self.save_var("$$", 1j)#使用复数1j替换未知数
-        r, e = self.eval(exp)
+        r, o, e = self.eval(exp)
         r = -r.real/r.imag#实部除以虚部并取反
 
         #保存结果
         self.save_var("$ans", r)
         #保存未知数
         self.save_var("$$", r)
-        return r, e
+        return r, o, e
 

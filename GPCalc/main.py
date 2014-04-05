@@ -43,8 +43,9 @@ Hope you to enjoy it!
         err = None
         try:
             #智能执行并返回结果和错误信息
-            r, err = calc.xrun(exp)
-            if r != None:print "$ans:", r
+            res, out, err = calc.xrun(exp)
+            if out:print out
+            if res != None:print "$ans:", res
         except:
             info = sys.exc_info()
             err = "\n".join([str(i) for i in info]) + "\n"
@@ -58,8 +59,9 @@ def quick_calc(exps):
     calc = Calculator()
     for exp in exps:
         try:
-            r, err = calc.xrun(exp)
-            if r != None:print "$ans:", r
+            res, out, err = calc.xrun(exp)
+            if out:print out
+            if res != None:print "$ans:", res
         except:
             info = sys.exc_info()
             err = "\n".join([str(i) for i in info]) + "\n"
@@ -76,4 +78,5 @@ def main(argv):
         quick_calc(argv[1:])
 
 if __name__ == '__main__':
-    main(sys.argv)
+    #main(sys.argv)
+    main(("","84+624+158+41","0124+0x270+158+051"))

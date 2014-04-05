@@ -6,6 +6,7 @@
 import graytokenizer
 from expelement import ElementTypeEnum
 import operators
+import re
 
 class Convertor(object):
     """
@@ -48,6 +49,7 @@ class Convertor(object):
         exp = exp.strip()#取出前后空白字符
         exp = exp.lower()#转为小写
         exp = exp.replace("$", "_")#处理变量
+        exp = re.sub("0x[0-9a-f]+",lambda m:str(int(m.group(0), 16)), exp)#处理十六进制表示的数值
         return exp
 
     @classmethod
