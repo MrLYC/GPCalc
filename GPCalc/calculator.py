@@ -137,7 +137,6 @@ class Supporter(object):
         """集合的总体方差"""
         n = len(l)
         avg = Supporter.__avg(l)
-        print avg
 
         return reduce(lambda s, i:s + (i - avg) ** 2, l, 0.0) / (n - 1)
 

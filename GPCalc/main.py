@@ -59,6 +59,7 @@ def quick_calc(exps):
     calc = Calculator()
     for exp in exps:
         try:
+            print ">",exp
             res, out, err = calc.xrun(exp)
             if out:print out
             if res != None:print "$ans:", res
@@ -69,7 +70,7 @@ def quick_calc(exps):
             e = err.split("\n")
             print "===== err ====="
             print e[1]
-            print ""
+    raw_input("")
 
 def main(argv):
     if len(argv) == 1:
