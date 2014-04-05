@@ -59,7 +59,7 @@ class Convertor(object):
             #遇到数字和变量直接追加到后缀表达式
             if tk.type == ElementTypeEnum.NUM or tk.type == ElementTypeEnum.VAR:postfix.append(tk)
             elif tk.type == ElementTypeEnum.BOP:
-                #遇到
+                #遇到双目运算符则将栈中优先级比其大的运算符追加到表达式中
                 while op_stack:
                     os_tk = op_stack[-1]
                     if os_tk.value >= tk.value :postfix.append(op_stack.pop())
@@ -67,27 +67,32 @@ class Convertor(object):
                 op_stack.append(tk)
             else:
                 if tk.type in (ElementTypeEnum.UOP, ElementTypeEnum.LBK):
+                    #单目运算符和左括号
                     op_stack.append(tk)
                 elif tk.type == ElementTypeEnum.RBK:
+                    #遇到右括号则把前一个左括号之后的所有运算符追加到表达式
                     while op_stack:
                         os_tk = op_stack.pop()
                         if os_tk.type == ElementTypeEnum.LBK:break
                         postfix.append(os_tk)
                     else:raise Exception("error expression.")
                 elif tk.type == ElementTypeEnum.CMM:
+                    #逗号是一个特殊的双目运算符,用于将元素数组化
                     while op_stack:
                         os_tk = op_stack[-1]
                         if os_tk.type == ElementTypeEnum.LBK:break
                         postfix.append(op_stack.pop())
                     else:raise Exception("error expression.")
                     op_stack.append(tk)
+        #将栈中剩余的操作符追加到表达式
         else:postfix += op_stack[::-1]
 
         return postfix
 
     @staticmethod
     def format(exp):
-        exp = Convertor.preprocessing(exp)
-        gtk = Convertor.tokenize(exp)
-        postfix = Convertor.topostfix(gtk)
+        """格式化表达式"""
+        exp = Convertor.preprocessing(exp)#预处理
+        gtk = Convertor.tokenize(exp)#获取标识符
+        postfix = Convertor.topostfix(gtk)#转为逆波兰表达式
         return postfix
