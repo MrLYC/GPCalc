@@ -11,11 +11,11 @@ class Convertor(object):
     """
     转换器
     """
-    @staticmethod
-    def __replace(tk):
+    @classmethod
+    def __replace(cls, tk):
         """替换"""
         if tk.type == ElementTypeEnum.NUM:
-            #注入点,可改为Decimal
+            #注入点,可改为Decimal,但内置的Decimal不支持与复数运算,因此使用float
             if tk.value.find("j") == -1:tk.value = float(tk.value)
             else:tk.value = complex(tk.value) #此项支持复数
 
@@ -31,35 +31,34 @@ class Convertor(object):
         return tk
 
 
-    @staticmethod
-    def __op_stack_pop(op_stack, tk):
+    @classmethod
+    def __opstack_pop(cls, op_stack, tk):
         """从运算符栈弹出若干合适的运算符"""
-        lst = []
         while op_stack:
             os_tk = op_stack[-1]
-            #若栈顶优先级小于当前标识符或遇到左括号
+            #若栈顶优先级小于当前标识符或遇到左括号,右括号的优先级是最小的
             if os_tk.value < tk.value or os_tk.type == ElementTypeEnum.LBK:break
-            lst.append(op_stack.pop())
-        return lst
+            yield op_stack.pop()
+        raise StopIteration()
 #-------------------------------------------------------------------------------
 
-    @staticmethod
-    def preprocessing(exp):
+    @classmethod
+    def preprocessing(cls, exp):
         """预处理"""
         exp = exp.strip()#取出前后空白字符
         exp = exp.lower()#转为小写
         exp = exp.replace("$", "_")#处理变量
         return exp
 
-    @staticmethod
-    def tokenize(exp):
+    @classmethod
+    def tokenize(cls, exp):
         """获取标记"""
         #获取葡萄表达式的标识符
         gtk = graytokenizer.GrayToken(exp)
-        return map(Convertor.__replace, gtk())#检查并替换标识符
+        return map(cls.__replace, gtk())#检查并替换标识符
 
-    @staticmethod
-    def topostfix(tokens):
+    @classmethod
+    def topostfix(cls, tokens):
         """转为后缀表达式"""
         ETE = ElementTypeEnum
         postfix = []#保存后缀表达式
@@ -75,11 +74,10 @@ class Convertor(object):
 
             elif tk.type not in (ETE.UOP, ETE.LBK):
                 #右括号,逗号和双目运算符需要弹出栈顶一部分合适的运算符
-                lst = Convertor.__op_stack_pop(op_stack, tk)
+                #追加到后缀表达式中
+                postfix.extend(cls.__opstack_pop(op_stack, tk))
 
                 if tk.type == ETE.RBK:op_stack.pop()#把栈顶的左括号弹出
-
-                postfix.extend(lst)#追加到后缀表达式中
 
             if tk.type in (ETE.UOP, ETE.LBK, ETE.CMM, ETE.BOP):
                 #运算符和左括号直接入运算符栈
@@ -90,10 +88,10 @@ class Convertor(object):
 
         return postfix
 
-    @staticmethod
-    def format(exp):
+    @classmethod
+    def format(cls, exp):
         """格式化表达式"""
-        exp = Convertor.preprocessing(exp)#预处理
-        gtk = Convertor.tokenize(exp)#获取标识符
-        postfix = Convertor.topostfix(gtk)#转为逆波兰表达式
+        exp = cls.preprocessing(exp)#预处理
+        gtk = cls.tokenize(exp)#获取标识符
+        postfix = cls.topostfix(gtk)#转为逆波兰表达式
         return postfix
