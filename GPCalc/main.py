@@ -9,18 +9,18 @@ from calculator import Calculator
 def by_input():
     """输入表达式"""
     print """
-=================== Info =====================
-GPClac v0.1 created by LYC built on 03/04/2014
+GPClac v0.2 created by LYC built on 03/04/2014
 
-    Help for GPCalc
+    Help
 GPCalc can evaluate expression strings from
 stdin or start up arguments.
-Welcome to visit and get the detail documents
-on: https://git.oschina.net/Mr_LYC/GPCalc/
+Details: https://git.oschina.net/Mr_LYC/GPCalc
 
     Features
 Evaluation:
     fact(100) / 2
+    Use the var $ans as the result of this
+    expression in the next expression.
 
 Define a var:
     $varname:expression
