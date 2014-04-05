@@ -5,6 +5,7 @@
 
 import sys
 import StringIO
+import random
 
 class YCTools(object):
     """提供API以及安全机制"""
@@ -39,9 +40,9 @@ class YCPYBase(object):
     }
 
     def __init__(self, stdin = sys.stdin, stdout = sys.stdout, stderr = sys.stderr):
-        self.__stdin = stdin
-        self.__stdout = stdout
-        self.__stderr = stderr
+        self._stdin = stdin
+        self._stdout = stdout
+        self._stderr = stderr
 
         #运行环境
         self.Environment = {}
@@ -52,11 +53,6 @@ class YCPYBase(object):
         """初始化运行环境"""
         self.Environment = dict(YCPY.DefaultEnvironment)
 
-    def __switch_stream(self):
-        """切换stdin,stdout,stderr"""
-        self.__stdin, self.__stdout, self.__stderr, sys.stdin,    sys.stdout,    sys.stderr = \
-         sys.stdin,   sys.stdout,    sys.stderr,    self.__stdin, self.__stdout, self.__stderr
-
     def __write_error(self):
         """遇到错误把错误信息写入stderr"""
         info = sys.exc_info()
@@ -64,27 +60,21 @@ class YCPYBase(object):
 
     def exec_code(self, code):
         """执行代码段"""
-        self.__switch_stream()
 
         try:
             #使用指定运行环境以隔离对当前运行环境的影响
             exec(code, self.Environment)
         except:
             self.__write_error()
-        finally:
-            self.__switch_stream()
 
     def eval_exp(self, exp):
         """执行表达式"""
-        self.__switch_stream()
 
         try:
             #返回表达式的值
             return eval(exp, self.Environment)
         except:
             self.__write_error()
-        finally:
-            self.__switch_stream()
 
 class YCPY(YCPYBase):
     """针对易用性做了一些改进"""
@@ -101,6 +91,8 @@ class YCPY(YCPYBase):
         self.api_dct.update(apis)
         self.api_dct.update(kw)
 
+        self.stream_key = 0
+
         super(YCPY,self).__init__(self.stdin, self.stdout, self.stderr)
 
         self.init()
@@ -109,6 +101,10 @@ class YCPY(YCPYBase):
         """初始化运行环境"""
         super(YCPY, self).init()
         self.Environment.update(self.api_dct)
+
+    def add_api(self, name, val):
+        """添加api"""
+        self.Environment.update({name: val})
 
     def __set_stdin(self, input_list):
         """将输入列表写进stdin"""
@@ -121,11 +117,21 @@ class YCPY(YCPYBase):
         stream.buf = ""
         return buf
 
+    def __switch_stream(self, old, new):
+        """切换stdin,stdout,stderr"""
+        if old == self.stream_key:
+            self._stdin, self._stdout, self._stderr, sys.stdin,    sys.stdout,    sys.stderr = \
+            sys.stdin,   sys.stdout,    sys.stderr,    self._stdin, self._stdout, self._stderr
+            self.stream_key = new
+
     def exec_code(self, code, *input_list):
         """执行指定的代码,并返回(stdout,stderr),input_list是stdin,一个元素代表一行"""
         self.__set_stdin(input_list)
 
+        key = random.random()
+        self.__switch_stream(0, key)
         super(YCPY,self).exec_code(code)
+        self.__switch_stream(key, 0)
 
         return self.__read_stream(self.stdout), self.__read_stream(self.stderr)
 
@@ -133,7 +139,10 @@ class YCPY(YCPYBase):
         """执行指定的代码,并返回(结果值,stdout,stderr),input_list是stdin,一个元素代表一行"""
         self.__set_stdin(input_list)
 
+        key = random.random()
+        self.__switch_stream(0, key)
         result = super(YCPY,self).eval_exp(exp)
+        self.__switch_stream(key, 0)
 
         return result, self.__read_stream(self.stdout), self.__read_stream(self.stderr)
 

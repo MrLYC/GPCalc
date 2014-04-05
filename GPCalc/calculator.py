@@ -11,6 +11,30 @@ import math
 from decimal import Decimal
 import re
 
+class func_lambda(object):
+    """函数类"""
+    def __init__(self, exp, hdlr):
+        self.exp = exp #对应的表达式
+        self._handler = hdlr #所属计算器
+
+    def __call__(self, arg_lst):
+        for _l,_  in enumerate(arg_lst):
+            self._handler.save_var("$%d" % (_l+1), _) #保存变量
+        self._handler.save_var("$0", arg_lst)#保存参数
+
+        r, o, e = self._handler.eval(self.exp)
+
+        for _l,_  in enumerate(arg_lst):
+            self._handler.del_var("$%d" % (_l+1)) #清除变量
+
+        if o:
+            print o
+
+        if e:
+            e = e.split("\n")
+            raise Exception(e[1])
+        return r
+
 class Supporter(object):
     """
     Calcultor Supporter
@@ -30,7 +54,7 @@ class Supporter(object):
         return apis
 
     @classmethod
-    def __args2list(cls, func):
+    def args2list(cls, func):
         """将多参数或嵌套数组打包和降维成一维数组的装饰器"""
         def _(*arg, **kw):
             return func(Supporter.tuple(arg), **kw)
@@ -38,7 +62,7 @@ class Supporter(object):
         return _
 
     @classmethod
-    def __list2args(cls, func):
+    def list2args(cls, func):
         """将数组展开成多个参数列表的装饰器"""
         def _(*arg, **kw):
             return func(*Supporter.tuple(arg), **kw)
@@ -49,34 +73,34 @@ class Supporter(object):
     def __math_apis(cls):
         """数学函数"""
         return {
-        "sin": cls.__list2args(math.sin),
-        "cos": cls.__list2args(math.cos),
-        "tan": cls.__list2args(math.tan),
-        "arcsin": cls.__list2args(math.asin),
-        "arccos": cls.__list2args(math.acos),
-        "arctan": cls.__list2args(math.atan),
-        "sinh": cls.__list2args(math.sinh),
-        "cosh": cls.__list2args(math.cosh),
-        "tanh": cls.__list2args(math.tanh),
+        "sin": cls.list2args(math.sin),
+        "cos": cls.list2args(math.cos),
+        "tan": cls.list2args(math.tan),
+        "arcsin": cls.list2args(math.asin),
+        "arccos": cls.list2args(math.acos),
+        "arctan": cls.list2args(math.atan),
+        "sinh": cls.list2args(math.sinh),
+        "cosh": cls.list2args(math.cosh),
+        "tanh": cls.list2args(math.tanh),
 
-        "log": cls.__list2args(cls.__log),
-        "log10": cls.__list2args(math.log10),
-        "ln": cls.__list2args(lambda a: math.log(a)),
+        "log": cls.list2args(cls.__log),
+        "log10": cls.list2args(math.log10),
+        "ln": cls.list2args(lambda a: math.log(a)),
 
-        "pow": cls.__list2args(pow),
-        "exp": cls.__list2args(math.exp),
-        "fact": cls.__list2args(math.factorial),
-        "mod": cls.__list2args(lambda a, b: a % b),
-        "sqrt": cls.__list2args(math.sqrt),
-        "cuberoot": cls.__list2args(cls.__cuberoot),
-        "yroot": cls.__list2args(cls.__yroot),
+        "pow": cls.list2args(pow),
+        "exp": cls.list2args(math.exp),
+        "fact": cls.list2args(math.factorial),
+        "mod": cls.list2args(lambda a, b: a % b),
+        "sqrt": cls.list2args(math.sqrt),
+        "cuberoot": cls.list2args(cls.__cuberoot),
+        "yroot": cls.list2args(cls.__yroot),
 
-        "avg": cls.__args2list(cls.__avg),
-        "sum": cls.__args2list(sum),
-        "var": cls.__args2list(cls.__var),
-        "stdev": cls.__args2list(cls.__stdev),
-        "varp": cls.__args2list(cls.__varp),
-        "stdevp": cls.__args2list(cls.__stdevp),
+        "avg": cls.args2list(cls.__avg),
+        "sum": cls.args2list(sum),
+        "var": cls.args2list(cls.__var),
+        "stdev": cls.args2list(cls.__stdev),
+        "varp": cls.args2list(cls.__varp),
+        "stdevp": cls.args2list(cls.__stdevp),
         }
 
 
@@ -84,6 +108,8 @@ class Supporter(object):
     def __const_apis(cls):
         """常量对象"""
         return {
+        "__0": tuple(),#空
+
         "__e": math.e,#自然底数
         "__pi": math.pi,#圆周率
         "__c": 299792458,#真空中光速
@@ -98,8 +124,10 @@ class Supporter(object):
         """扩展函数"""
         return {
         "tuple": cls.tuple,
-        "val": cls.__args2list(cls.__val),
-        "cell": cls.__args2list(cls.__int),
+        "val": cls.args2list(cls.__val),
+        "cell": cls.args2list(cls.__int),
+        "xrun": cls.args2list(cls.__int),
+        "lmd": func_lambda,
         }
 
     @staticmethod
@@ -177,15 +205,13 @@ class Supporter(object):
         else:arr.append(arg)
         return tuple(arr)
 
-
-
 class Calculator(object):
     """
     计算器
     """
     def __init__(self, ):
         super(Calculator, self).__init__()
-        self.__handler = ycpy.YCPY(Supporter.GetApis())#初始化YCPY
+        self._handler = ycpy.YCPY(Supporter.GetApis())#初始化YCPY
 
     def format_exp(self, exp):
         fmt_tks = Convertor.format(exp)#获得等价的后缀表达式
@@ -216,7 +242,16 @@ class Calculator(object):
             #变量实际成为了YCPY虚拟环境中_开头的全局变量
             var = var.replace("$", "_")
             #利用YCPY能够执行代码块的功能保存
-            self.__handler.exec_code("%s=%s" % (var, str(val)))
+            self._handler.exec_code("%s=%s" % (var, str(val)))
+        else:
+            raise Exception("Var should starts with $")
+
+    def del_var(self, var):
+        if var.startswith("$"):
+            #变量实际成为了YCPY虚拟环境中_开头的全局变量
+            var = var.replace("$", "_")
+            #删除变量
+            self._handler.exec_code("del %s" % var)
         else:
             raise Exception("Var should starts with $")
 
@@ -224,16 +259,11 @@ class Calculator(object):
         res = None
         err = ""
         out = ""
-        if exp.find(":") != -1:#变量声明
-            i = exp.find(":")
-            var = exp[:i]#预计的变量名
-            exp = exp[i+1:]#变量的表达式
-            m_var = re.search("^\s*(\$[a-z]+\d*)\s*$", var)
+        if exp.startswith("#"):
+            res, out, err = self.def_func(exp)
 
-            if m_var:#确保是正确的命名以防被注入
-                res, out, err = self.eval(exp)
-                self.save_var(m_var.groups()[0], res)
-            else:raise Exception("illegal var name of %s" % var)
+        elif exp.find(":") != -1:#变量声明
+            res, out, err = self.def_var(exp)
 
         elif exp.find("=") != -1:#求解方程
             res, out, err = self.equation(exp)
@@ -241,11 +271,12 @@ class Calculator(object):
         else:#普通表达式
             res, out, err = self.eval(exp)
 
+        if res == None:res = tuple()
         return res, out, err
 
     def eval(self, exp, *arg):
         exp = self.format_exp(exp)#转换成等价的Python表达式
-        r, o, e = self.__handler.eval_exp(exp)
+        r, o, e = self._handler.eval_exp(exp)
 
         if isinstance(r, tuple):
             r = Supporter.tuple(r)
@@ -272,4 +303,32 @@ class Calculator(object):
         #保存未知数
         self.save_var("$$", r)
         return r, o, e
+
+    def def_var(self, exp):
+        i = exp.find(":")
+        var = exp[:i]#预计的变量名
+        exp = exp[i+1:]#变量的表达式
+        m_var = re.search("^\s*(\$[a-z]+\d*)\s*$", var)
+
+        if m_var:#确保是正确的命名以防被注入
+            res, out, err = self.eval(exp)
+            self.save_var(m_var.groups()[0], res)
+            return res, out, err
+        raise Exception("illegal var name of %s" % var)
+
+    def def_func(self, exp):
+        i = exp.find(":")
+        name = exp[:i]#预计的函数名
+        exp = exp[i+1:]#函数内容
+
+        m_name = re.search("^#\s*([a-z]+\d*)\s*$", name)
+
+        if m_name:#确保是正确的命名以防被注入
+            name = m_name.groups()[0]
+            lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
+            self._handler.add_api(name, lmd)#加入到虚拟空间中
+
+            return None, "", ""
+        raise Exception("illegal lambda name of %s" % name)
+
 
