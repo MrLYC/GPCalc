@@ -15,6 +15,15 @@ def Calculator_Eval():
         return r
     return _
 
+@pytest.fixture
+def Calculator_Xrun():
+    calc = calculator.Calculator()
+    def _(exp):
+        r, e = calc.xrun(exp)
+        return r
+    return _
+
+
 def is_equal(a, b, *arg):
     return abs(a - b) < 0.1 ** 10
 
@@ -71,6 +80,78 @@ def test_mod_operator(Calculator_Eval):
     assert is_equal(Calculator_Eval("4mod mod(5,3)"), 0)
     assert is_equal(Calculator_Eval("4 mod 5 mod 3"), 1)
     assert is_equal(Calculator_Eval("4 mod pow(2,3) mod 3"), 1)
+
+def test_tuple(Calculator_Xrun):
+    case = (
+        ("(3,4)", "([3,4])"),
+        ("$x:$ans", "(3,4)"),
+        ("log(3,4)", "log([3,4])"),
+        ("log $x", "log(3,4)"),
+        ("mod(3,4)", "mod([3,4])"),
+        ("mod $x", "mod(3,4)"),
+        ("pow(3,4)", "pow([3,4])"),
+        ("pow $x", "pow(3,4)"),
+        ("yroot(3,4)", "yroot([3,4])"),
+        ("yroot $x", "yroot(3,4)"),
+        ("avg(3,4)", "avg([3,4])"),
+        ("avg $x", "avg(3,4)"),
+        ("sum(3,4)", "sum([3,4])"),
+        ("sum $x", "sum(3,4)"),
+        ("var(3,4)", "var([3,4])"),
+        ("var $x", "var(3,4)"),
+        ("varp(3,4)", "varp([3,4])"),
+        ("varp $x", "varp(3,4)"),
+        ("stdev(3,4)", "stdev([3,4])"),
+        ("stdev $x", "stdev(3,4)"),
+        ("stdevp(3,4)", "stdevp([3,4])"),
+        ("stdevp $x", "stdevp(3,4)"),
+        ("$x:tuple(2)", "$ans"),
+        ("sin(2)", "sin((2))"),
+        ("sin $x", "sin($x)"),
+        ("cos(2)", "cos((2))"),
+        ("cos $x", "cos($x)"),
+        ("tan(2)", "tan((2))"),
+        ("tan $x", "tan($x)"),
+        ("arcsin(2)", "arcsin((2))"),
+        ("arcsin $x", "arcsin($x)"),
+        ("arccos(2)", "arccos((2))"),
+        ("arccos $x", "arccos($x)"),
+        ("arctan(2)", "arctan((2))"),
+        ("arctan $x", "arctan($x)"),
+        ("sinh(2)", "sinh((2))"),
+        ("sinh $x", "sinh($x)"),
+        ("cosh(2)", "cosh((2))"),
+        ("cosh $x", "cosh($x)"),
+        ("tanh(2)", "tanh((2))"),
+        ("tanh $x", "tanh($x)"),
+        ("log10(2)", "log10((2))"),
+        ("log10 $x", "log10($x)"),
+        ("ln(2)", "ln((2))"),
+        ("ln $x", "ln($x)"),
+        ("exp(2)", "exp((2))"),
+        ("exp $x", "exp($x)"),
+        ("fact(2)", "fact((2))"),
+        ("fact $x", "fact($x)"),
+        ("sqrt(2)", "sqrt((2))"),
+        ("sqrt $x", "sqrt($x)"),
+        ("cuberoot(2)", "cuberoot((2))"),
+        ("cuberoot $x", "cuberoot($x)"),
+        ("avg(2)", "avg((2))"),
+        ("avg $x", "avg($x)"),
+        ("sum(2)", "sum((2))"),
+        ("sum $x", "sum($x)"),
+        ("var(2)", "var((2))"),
+        ("var $x", "var($x)"),
+        ("varp(2)", "varp((2))"),
+        ("varp $x", "varp($x)"),
+        ("stdev(2)", "stdev((2))"),
+        ("stdev $x", "stdev($x)"),
+        ("stdevp(2)", "stdevp((2))"),
+        ("stdevp $x", "stdevp($x)"),
+    )
+
+    for a,b in case:
+        assert Calculator_Xrun(a) == Calculator_Xrun(b)
 
 def main():
     pytest.main("-x '%s'" % sys.argv[0])

@@ -32,10 +32,18 @@ class Supporter(object):
         return apis
 
     @classmethod
-    def __listarg(cls, func):
+    def __args2list(cls, func):
         """将多参数或嵌套数组打包和降维成一维数组的装饰器"""
         def _(*arg, **kw):
-            return func(Supporter.__tuple(arg), **kw)
+            return func(Supporter.tuple(arg), **kw)
+
+        return _
+
+    @classmethod
+    def __list2args(cls, func):
+        """将数组展开成多个参数列表的装饰器"""
+        def _(*arg, **kw):
+            return func(*Supporter.tuple(arg), **kw)
 
         return _
 
@@ -43,34 +51,34 @@ class Supporter(object):
     def __math_apis(cls):
         """数学函数"""
         return {
-        "sin": math.sin,
-        "cos": math.cos,
-        "tan": math.tan,
-        "arcsin": math.asin,
-        "arccos": math.acos,
-        "arctan": math.atan,
-        "sinh": math.sinh,
-        "cosh": math.cosh,
-        "tanh": math.tanh,
+        "sin": cls.__list2args(math.sin),
+        "cos": cls.__list2args(math.cos),
+        "tan": cls.__list2args(math.tan),
+        "arcsin": cls.__list2args(math.asin),
+        "arccos": cls.__list2args(math.acos),
+        "arctan": cls.__list2args(math.atan),
+        "sinh": cls.__list2args(math.sinh),
+        "cosh": cls.__list2args(math.cosh),
+        "tanh": cls.__list2args(math.tanh),
 
-        "log": cls.__log,
-        "log10": math.log10,
-        "ln": math.log,
+        "log": cls.__list2args(cls.__log),
+        "log10": cls.__list2args(math.log10),
+        "ln": cls.__list2args(lambda a: math.log(a)),
 
-        "pow": pow,
-        "exp": math.exp,
-        "fact": math.factorial,
-        "mod": lambda a, b: a % b,
-        "sqrt": math.sqrt,
-        "cuberoot": cls.__cuberoot,
-        "yroot": cls.__yroot,
+        "pow": cls.__list2args(pow),
+        "exp": cls.__list2args(math.exp),
+        "fact": cls.__list2args(math.factorial),
+        "mod": cls.__list2args(lambda a, b: a % b),
+        "sqrt": cls.__list2args(math.sqrt),
+        "cuberoot": cls.__list2args(cls.__cuberoot),
+        "yroot": cls.__list2args(cls.__yroot),
 
-        "avg": cls.__listarg(cls.__avg),
-        "sum": cls.__listarg(sum),
-        "var": cls.__listarg(cls.__var),
-        "stdev": cls.__listarg(cls.__stdev),
-        "varp": cls.__listarg(cls.__varp),
-        "stdevp": cls.__listarg(cls.__stdevp),
+        "avg": cls.__args2list(cls.__avg),
+        "sum": cls.__args2list(sum),
+        "var": cls.__args2list(cls.__var),
+        "stdev": cls.__args2list(cls.__stdev),
+        "varp": cls.__args2list(cls.__varp),
+        "stdevp": cls.__args2list(cls.__stdevp),
         }
 
 
@@ -87,7 +95,7 @@ class Supporter(object):
     def __tools_apis(cls):
         """扩展函数"""
         return {
-        "tuple": cls.__tuple,
+        "tuple": cls.tuple,
         }
 
     @staticmethod
@@ -139,13 +147,15 @@ class Supporter(object):
         return math.sqrt(Supporter.__varp(l))
 
     @staticmethod
-    def __tuple(arg):
+    def tuple(arg):
         """参数包装成数组(tuple)"""
         arr = []
-        for e in arg:
-            if isinstance(e, (list, tuple)):
-                arr.extend(Supporter.__tuple(e))
-            else:arr.append(e)
+        if isinstance(arg, tuple):
+            for e in arg:
+                if isinstance(e, (list, tuple)):
+                    arr.extend(Supporter.tuple(e))
+                else:arr.append(e)
+        else:arr.append(arg)
         return tuple(arr)
 
 
@@ -209,6 +219,10 @@ class Calculator(object):
     def eval(self, exp, *arg):
         exp = self.format_exp(exp)#转换成等价的Python表达式
         r, o, e = self.__handler.eval_exp(exp)
+
+        if isinstance(r, tuple):
+            r = Supporter.tuple(r)
+
         self.save_var("$ans", r)#保存结果
         return r, e
 
