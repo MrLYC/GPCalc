@@ -86,6 +86,16 @@ class Supporter(object):
         return {
         "_e": math.e,
         "_pi": math.pi,
+        "_c": 299792458,
+        "_h":6.62606896*math.pow(10,-34), #universal, 2006 CODATA
+        "_g":6.67428*math.pow(10,-11), #universal, 2006 CODATA
+        '_mu0':4*math.pi*math.pow(10,-7), #defined
+        '_q0':1.602176487*math.pow(10,-19),#2006 CODATA
+        '_na':6.0221415*math.pow(10,23),#2006 CODATA
+        '_me':9.10938188*math.pow(10,-31),#2006 CODATA
+        '_mp':1.67262158*math.pow(10,-27),#2006 CODATA
+        '_mn':1.67492729*math.pow(10,-27),#2006 CODATA
+        '_r':8.314472, #2006 CODATA
         }
 
 
