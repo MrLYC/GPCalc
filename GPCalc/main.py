@@ -78,5 +78,4 @@ def main(argv):
         quick_calc(argv[1:])
 
 if __name__ == '__main__':
-    #main(sys.argv)
-    main(("","84+624+158+41","0124+0x270+158+051"))
+    main(sys.argv)
