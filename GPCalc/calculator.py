@@ -246,5 +246,3 @@ class Calculator(object):
         self.save_var("$$", r)
         return r, e
 
-
-
