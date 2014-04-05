@@ -124,7 +124,7 @@ class Supporter(object):
         n = len(l)
         avg = Supporter.__avg(l)
 
-        if n == 1:return None
+        if n == 1:return 0.0
         return reduce(lambda s, i:s + (i - avg) ** 2, l, 0.0) / n
 
     @staticmethod
@@ -138,6 +138,7 @@ class Supporter(object):
         n = len(l)
         avg = Supporter.__avg(l)
 
+        if n == 1:return 0.0
         return reduce(lambda s, i:s + (i - avg) ** 2, l, 0.0) / (n - 1)
 
     @staticmethod
@@ -235,6 +236,7 @@ class Calculator(object):
 
         else:#普通表达式
             res, out, err = self.eval(exp)
+
         return res, out, err
 
     def eval(self, exp, *arg):

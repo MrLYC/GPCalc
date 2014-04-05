@@ -9,11 +9,7 @@ import calculator
 
 @pytest.fixture
 def Calculator_Eval():
-    calc = calculator.Calculator()
-    def _(exp):
-        r, o, e = calc.eval(exp)
-        return r
-    return _
+    return Calculator_Xrun()
 
 @pytest.fixture
 def Calculator_Xrun():
@@ -128,12 +124,14 @@ def test_tuple(Calculator_Xrun):
         ("cos $x", "cos($x)"),
         ("tan(2)", "tan((2))"),
         ("tan $x", "tan($x)"),
-        ("arcsin(2)", "arcsin((2))"),
+        ("$x:0.2", "0.2"),
+        ("arcsin(0.2)", "arcsin((0.2))"),
         ("arcsin $x", "arcsin($x)"),
-        ("arccos(2)", "arccos((2))"),
+        ("arccos(0.2)", "arccos((0.2))"),
         ("arccos $x", "arccos($x)"),
-        ("arctan(2)", "arctan((2))"),
+        ("arctan(0.2)", "arctan((0.2))"),
         ("arctan $x", "arctan($x)"),
+        ("$x:2", "2"),
         ("sinh(2)", "sinh((2))"),
         ("sinh $x", "sinh($x)"),
         ("cosh(2)", "cosh((2))"),
