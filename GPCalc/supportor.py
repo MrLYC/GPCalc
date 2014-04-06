@@ -120,8 +120,7 @@ class Supporter(object):
         "tuple": cls.tuple,
         "val": cls.args2list(cls.__val),
         "cell": cls.args2list(cls.__int),
-        "xrun": cls.args2list(cls.__int),
-        "lmd": func_lambda,
+        "len": cls.args2list(len),
         }
 
     @staticmethod
