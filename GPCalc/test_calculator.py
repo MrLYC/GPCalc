@@ -95,7 +95,7 @@ def test_spcial_num(Calculator_Xrun):
 def test_tuple(Calculator_Xrun):
     case = (
         ("(3,4)", "([3,4])"),
-        ("$x:$ans", "(3,4)"),
+        ("$x:$$ans", "(3,4)"),
         ("log(3,4)", "log([3,4])"),
         ("log $x", "log(3,4)"),
         ("mod(3,4)", "mod([3,4])"),
@@ -116,7 +116,7 @@ def test_tuple(Calculator_Xrun):
         ("stdev $x", "stdev(3,4)"),
         ("stdevp(3,4)", "stdevp([3,4])"),
         ("stdevp $x", "stdevp(3,4)"),
-        ("$x:tuple(2)", "$ans"),
+        ("$x:tuple(2)", "$$ans"),
         ("sin 2", "sin(2)"),
         ("sin(2)", "sin((2))"),
         ("sin $x", "sin($x)"),
@@ -166,13 +166,13 @@ def test_tuple(Calculator_Xrun):
         ("cell(1,2.2,3.8)", "(1,2,3)"),
 
         ("(1,2)", "[1,2]"),
-        ("$x:$ans", "(1,2)"),
+        ("$x:$$ans", "(1,2)"),
         ("(1,2, 3, 4)", "((1,2),3,4)"),
-        ("$ans", "((1,2),(3,4))"),
+        ("$$ans", "((1,2),(3,4))"),
         ("(1,2, 3, 4, 5)", "((1,2),(3,(4, 5)))"),
-        ("$ans", "($x,(3,(4, 5)))"),
-        ("$ans", "(($x,3) + (4, 5))"),
-        ("$ans", "($x,3) + (4, 5)"),
+        ("$$ans", "($x,(3,(4, 5)))"),
+        ("$$ans", "(($x,3) + (4, 5))"),
+        ("$$ans", "($x,3) + (4, 5)"),
     )
 
     for a,b in case:
@@ -237,9 +237,9 @@ def test_function(Calculator_Xrun):
 
     case2 = (
         ("#func (1,10,100,1000,54321)", "64.71950571665647"),
-        ("$ans", "#func ($x)"),
-        ("$ans", "#func $x"),
-        ("$ans", "#func $func"),
+        ("$$ans", "#func ($x)"),
+        ("$$ans", "#func $x"),
+        ("$$ans", "#func $func"),
     )
     for a,b in case2:
         assert is_equal(Calculator_Xrun(a), Calculator_Xrun(b))

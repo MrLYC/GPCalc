@@ -97,7 +97,7 @@ class Calculator(object):
         if isinstance(r, tuple):
             r = Supporter.tuple(r)
 
-        self.save_var("$ans", r)#保存结果
+        self.save_var("$$ans", r)#保存结果
         return r, o, e
 
     def equation(self, exp):

@@ -19,7 +19,7 @@ Details: https://git.oschina.net/Mr_LYC/GPCalc
     Features
 Evaluation:
     fact(0x64) / $$e
-    Use the var $ans as the result of this
+    Use the $$ans as the result of this
     expression in the next expression.
 
 Defines:
@@ -45,7 +45,7 @@ Hope you to enjoy it!
             #智能执行并返回结果和错误信息
             res, out, err = calc.xrun(exp)
             if out:print out
-            if res != None:print "$ans:", res
+            if res != None:print "$$ans:", res
         except:
             info = sys.exc_info()
             err = "\n".join([str(i) for i in info]) + "\n"
@@ -62,7 +62,7 @@ def quick_calc(exps):
             print ">",exp
             res, out, err = calc.xrun(exp)
             if out:print out
-            if res != None:print "$ans:", res
+            if res != None:print "$$ans:", res
         except:
             info = sys.exc_info()
             err = "\n".join([str(i) for i in info]) + "\n"
