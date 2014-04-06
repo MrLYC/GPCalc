@@ -11,7 +11,6 @@ def by_input():
     print """
 GPClac v0.2 created by LYC built on 03/04/2014
 
-    Help
 GPCalc can evaluate expression strings from
 stdin or start up arguments.
 Details: https://git.oschina.net/Mr_LYC/GPCalc
