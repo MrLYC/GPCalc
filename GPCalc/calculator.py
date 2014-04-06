@@ -19,6 +19,7 @@ class Calculator(object):
         self._handler = ycpy.YCPY(Supporter.GetApis())#初始化YCPY
 
     def format_exp(self, exp):
+        """格式化表达式"""
         fmt_tks = Convertor.format(exp)#获得等价的后缀表达式
         stack = []
 
@@ -43,6 +44,7 @@ class Calculator(object):
         else:raise Exception("unnecessary operand found")
 
     def save_var(self, var, val):
+        """保存变量"""
         if var.startswith("$"):
             #变量实际成为了YCPY虚拟环境中_开头的全局变量
             var = var.replace("$", "_")
@@ -52,6 +54,7 @@ class Calculator(object):
             raise Exception("Var should starts with $")
 
     def del_var(self, var):
+        """删除变量"""
         if var.startswith("$"):
             #变量实际成为了YCPY虚拟环境中_开头的全局变量
             var = Convertor.format_usrname(var)
@@ -61,6 +64,7 @@ class Calculator(object):
             raise Exception("Var should starts with $")
 
     def save_func(self, func, exp):
+        """保存函数"""
         if func.startswith("#"):
             #变量实际成为了YCPY虚拟环境中f_开头的全局变量
             func = Convertor.format_usrname(func)
@@ -70,14 +74,15 @@ class Calculator(object):
             raise Exception("Function should starts with #")
 
     def xrun(self, exp):
+        """智能选择运行的模式"""
         res = None
         err = ""
         out = ""
 
-        if exp.find(":") != -1:#变量声明
-            if exp.startswith("#"):
+        if exp.find(":") != -1:
+            if exp.startswith("#"):#函数声明
                 res, out, err = self.def_func(exp)
-            elif exp.startswith("$"):
+            elif exp.startswith("$"):#变量声明
                 res, out, err = self.def_var(exp)
             else:raise Exception("unknown operator")
 
@@ -91,6 +96,7 @@ class Calculator(object):
         return res, out, err
 
     def eval(self, exp, *arg):
+        """计算表达式"""
         exp = self.format_exp(exp)#转换成等价的Python表达式
         r, o, e = self._handler.eval_exp(exp)
 
@@ -101,6 +107,7 @@ class Calculator(object):
         return r, o, e
 
     def equation(self, exp):
+        """计算方程"""
         #利用Python的暗黑魔法来求解
         #出自:http://code.activestate.com/recipes/365013-linear-equations-solver-in-3-lines/
         #缺点是只能求解一元一次方程
@@ -121,6 +128,7 @@ class Calculator(object):
         return r, o, e
 
     def def_var(self, exp):
+        """定义变量"""
         i = exp.find(":")
         var = exp[:i]#预计的变量名
         exp = exp[i+1:]#变量的表达式
@@ -133,6 +141,7 @@ class Calculator(object):
         raise Exception("illegal var name of %s" % var)
 
     def def_func(self, exp):
+        """定义函数"""
         i = exp.find(":")
         name = exp[:i]#预计的函数名
         exp = exp[i+1:]#函数内容

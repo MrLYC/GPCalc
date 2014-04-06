@@ -91,6 +91,8 @@ class YCPY(YCPYBase):
         self.api_dct.update(apis)
         self.api_dct.update(kw)
 
+        #stream_key作用是当eval_exp或者exec_code函数在偶然的情况下被递归调用
+        #的情况下保证只有第一层调用持有对__switch_stream的控制权
         self.stream_key = 1#初始值是random不会产生的值
 
         super(YCPY,self).__init__(self.stdin, self.stdout, self.stderr)
