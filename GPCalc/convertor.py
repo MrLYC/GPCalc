@@ -7,6 +7,7 @@ import graytokenizer
 from expelement import ElementTypeEnum
 import operators
 import re
+from decimal import Decimal
 
 class Convertor(object):
     """
@@ -17,8 +18,9 @@ class Convertor(object):
         """替换"""
         if tk.type == ElementTypeEnum.NUM:
             #注入点,可改为Decimal,但内置的Decimal不支持与复数运算,因此使用float
-            if tk.value.find("j") == -1:tk.value = float(tk.value)
-            else:tk.value = complex(tk.value) #此项支持复数
+            if tk.value.endswith("j"):tk.value = complex(tk.value)#此项支持复数
+            elif tk.value.endswith("l"):tk.value = float(tk.value[:-1])
+            else: tk.value = float(tk.value)
 
         elif tk.type != ElementTypeEnum.VAR:
             if tk.type == ElementTypeEnum.LBK:

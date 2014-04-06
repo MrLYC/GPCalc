@@ -30,7 +30,7 @@ class ElementTypeEnum(object):
     表达式元素类型枚举
     """
     UOP = ElementType("UOP", r"^(\-|\+|[a-z]\w*)$")#单目运算符
-    NUM = ElementType("NUM", r"^(\.|\d)+j?$")#数字
+    NUM = ElementType("NUM", r"^(\.|\d)+[jl]?$")#数字
     BOP = ElementType("BOP", r"^(\W+|[a-z]+)$")#二目运算符
     VAR = ElementType("VAR", r"^_[a-z_0-9]+$")#合法变量
     LBK = ElementType("LBK", r"^[\(\[]$")#左括号
