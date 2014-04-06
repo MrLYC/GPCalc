@@ -60,6 +60,15 @@ class Calculator(object):
         else:
             raise Exception("Var should starts with $")
 
+    def save_func(self, func, exp):
+        if func.startswith("#"):
+            #变量实际成为了YCPY虚拟环境中f_开头的全局变量
+            func = func.replace("#", "f_")
+            lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
+            self._handler.add_api(func, lmd)#加入到虚拟空间中
+        else:
+            raise Exception("Function should starts with #")
+
     def xrun(self, exp):
         res = None
         err = ""
@@ -128,12 +137,10 @@ class Calculator(object):
         name = exp[:i]#预计的函数名
         exp = exp[i+1:]#函数内容
 
-        m_name = re.search("^#\s*([a-z]+\d*)\s*$", name)
+        m_name = re.search("^\s*(#[a-z]+\d*)\s*$", name)
 
         if m_name:#确保是正确的命名以防被注入
-            name = "f_%s" % m_name.groups()[0]
-            lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
-            self._handler.add_api(name, lmd)#加入到虚拟空间中
+            self.save_func(m_name.groups()[0], exp)
 
             return None, "", ""
         raise Exception("illegal lambda name of %s" % name)
