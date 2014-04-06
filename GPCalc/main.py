@@ -69,7 +69,6 @@ def quick_calc(exps):
             e = err.split("\n")
             print "===== err ====="
             print e[1]
-    raw_input("")
 
 def main(argv):
     if len(argv) == 1:
