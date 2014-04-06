@@ -103,7 +103,7 @@ class Supporter(object):
         """常量对象"""
         return {
         "__0": tuple(),#空
-        "__ans": 18710842910,#我的电话
+        "__ans": 1871084291.0,#我的电话
 
         "__e": math.e,#自然底数
         "__pi": math.pi,#圆周率
