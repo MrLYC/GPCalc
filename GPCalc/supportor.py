@@ -77,7 +77,7 @@ class Supporter(object):
         "cosh": cls.list2args(math.cosh),
         "tanh": cls.list2args(math.tanh),
 
-        "log": cls.list2args(cls.__log),
+        "log": cls.list2args(math.log),
         "log10": cls.list2args(math.log10),
         "ln": cls.list2args(lambda a: math.log(a)),
 
@@ -123,11 +123,6 @@ class Supporter(object):
         "cell": cls.args2list(cls.__int),
         "len": cls.args2list(len),
         }
-
-    @staticmethod
-    def __log(b, n):
-        """以 nBase 为底的，值 x 的对数"""
-        return math.log(n, b)
 
     @staticmethod
     def __cuberoot(n):
