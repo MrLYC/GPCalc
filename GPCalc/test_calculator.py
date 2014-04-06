@@ -163,7 +163,7 @@ def test_tuple(Calculator_Xrun):
         ("stdevp(2)", "stdevp((2))"),
         ("stdevp $x", "stdevp($x)"),
 
-        ("cell(1,2.2,3.8)", "(1,2,3)"),
+        ("ceil(1,2.2,3.8)", "(1,2,3)"),
 
         ("(1,2)", "[1,2]"),
         ("$x:$$ans", "(1,2)"),
