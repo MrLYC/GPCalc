@@ -54,7 +54,7 @@ class Calculator(object):
     def del_var(self, var):
         if var.startswith("$"):
             #变量实际成为了YCPY虚拟环境中_开头的全局变量
-            var = var.replace("$", "_")
+            var = Convertor.format_usrname(var)
             #删除变量
             self._handler.exec_code("del %s" % var)
         else:
@@ -63,7 +63,7 @@ class Calculator(object):
     def save_func(self, func, exp):
         if func.startswith("#"):
             #变量实际成为了YCPY虚拟环境中f_开头的全局变量
-            func = func.replace("#", "f_")
+            func = Convertor.format_usrname(func)
             lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
             self._handler.add_api(func, lmd)#加入到虚拟空间中
         else:

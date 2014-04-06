@@ -44,12 +44,17 @@ class Convertor(object):
 #-------------------------------------------------------------------------------
 
     @classmethod
+    def format_usrname(cls, exp):
+        exp = exp.replace("$", "_")#处理变量
+        exp = exp.replace("#", "func_")#处理函数
+        return exp
+
+    @classmethod
     def preprocessing(cls, exp):
         """预处理"""
         exp = exp.strip()#取出前后空白字符
         exp = exp.lower()#转为小写
-        exp = exp.replace("$", "_")#处理变量
-        exp = exp.replace("#", "f_")#处理函数
+        exp = cls.format_usrname(exp)
         exp = re.sub("0x[0-9a-f]+",lambda m:str(int(m.group(0), 16)), exp)#处理十六进制表示的数值
         return exp
 

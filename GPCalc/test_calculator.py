@@ -230,6 +230,7 @@ def test_function(Calculator_Xrun):
     case1 = (
         ("#func:-.12345+$5*123/321^2mod(sum([-1+$1^2*sin(cos(tan($1))),arcsin(-1+1-1),log($3,$2)*log10($4)/ln(exp($1)),cuberoot(sqrt(fact($2)*mod(5,3)))*yroot(5,2),avg([3,4,5,6]),sum([987,253])*var([$1,11,111,1111])/stdev([123,321,456,654,789,987])]))", "#f:1+1"),
         ("$x:(1,10,100,1000,54321)", "(1,10,100,1000,54321)"),
+        ("$func:$x", "$x"),
     )
     for a,b in case1:
         assert Calculator_Xrun(a) == Calculator_Xrun(b)
@@ -238,6 +239,7 @@ def test_function(Calculator_Xrun):
         ("#func (1,10,100,1000,54321)", "64.71950571665647"),
         ("$ans", "#func ($x)"),
         ("$ans", "#func $x"),
+        ("$ans", "#func $func"),
     )
     for a,b in case2:
         assert is_equal(Calculator_Xrun(a), Calculator_Xrun(b))
