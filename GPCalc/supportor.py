@@ -4,6 +4,7 @@
 # Created: 2014-04-06
 
 import math
+import re
 
 class func_lambda(object):
     """函数类"""
@@ -120,7 +121,7 @@ class Supporter(object):
         return {
         "tuple": cls.tuple,
         "val": cls.args2list(cls.__val),
-        "cell": cls.args2list(cls.__int),
+        "ceil": cls.args2list(cls.__int),
         "len": cls.args2list(len),
         }
 
@@ -180,7 +181,7 @@ class Supporter(object):
     @staticmethod
     def __int(n):
         """取整"""
-        return tuple(map(lambda i:float(int(i)), n))
+        return tuple(map(lambda i:type(i)(re.sub("\.\d*",".0", str(i))), n))
 
     @staticmethod
     def tuple(arg):
