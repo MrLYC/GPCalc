@@ -18,14 +18,14 @@ Details: https://git.oschina.net/Mr_LYC/GPCalc
 
     Features
 Evaluation:
-    fact(100) / 2
+    fact(0x64) / $$e
     Use the var $ans as the result of this
     expression in the next expression.
 
-Define a var:
+Defines:
     $varname:expression
-    You can use your var like $varname in your
-    expression later.
+    #lambda:expression
+    Use $var or #func in your expression later
 
 Solve an equation:
     1 + 2 * $$ = 3 / 4

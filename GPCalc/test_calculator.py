@@ -235,9 +235,9 @@ def test_function(Calculator_Xrun):
         assert Calculator_Xrun(a) == Calculator_Xrun(b)
 
     case2 = (
-        ("func (1,10,100,1000,54321)", "64.71950571665647"),
-        ("$ans", "func ($x)"),
-        ("$ans", "func $x"),
+        ("#func (1,10,100,1000,54321)", "64.71950571665647"),
+        ("$ans", "#func ($x)"),
+        ("$ans", "#func $x"),
     )
     for a,b in case2:
         assert is_equal(Calculator_Xrun(a), Calculator_Xrun(b))

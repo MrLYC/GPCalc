@@ -64,11 +64,13 @@ class Calculator(object):
         res = None
         err = ""
         out = ""
-        if exp.startswith("#"):
-            res, out, err = self.def_func(exp)
 
-        elif exp.find(":") != -1:#变量声明
-            res, out, err = self.def_var(exp)
+        if exp.find(":") != -1:#变量声明
+            if exp.startswith("#"):
+                res, out, err = self.def_func(exp)
+            elif exp.startswith("$"):
+                res, out, err = self.def_var(exp)
+            else:raise Exception("unknown operator")
 
         elif exp.find("=") != -1:#求解方程
             res, out, err = self.equation(exp)
@@ -129,7 +131,7 @@ class Calculator(object):
         m_name = re.search("^#\s*([a-z]+\d*)\s*$", name)
 
         if m_name:#确保是正确的命名以防被注入
-            name = m_name.groups()[0]
+            name = "f_%s" % m_name.groups()[0]
             lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
             self._handler.add_api(name, lmd)#加入到虚拟空间中
 
