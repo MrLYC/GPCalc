@@ -91,7 +91,7 @@ class YCPY(YCPYBase):
         self.api_dct.update(apis)
         self.api_dct.update(kw)
 
-        self.stream_key = 0
+        self.stream_key = 1#初始值是random不会产生的值
 
         super(YCPY,self).__init__(self.stdin, self.stdout, self.stderr)
 
@@ -129,9 +129,9 @@ class YCPY(YCPYBase):
         self.__set_stdin(input_list)
 
         key = random.random()
-        self.__switch_stream(0, key)
+        self.__switch_stream(1, key)#加锁
         super(YCPY,self).exec_code(code)
-        self.__switch_stream(key, 0)
+        self.__switch_stream(key, 1)
 
         return self.__read_stream(self.stdout), self.__read_stream(self.stderr)
 
@@ -140,9 +140,9 @@ class YCPY(YCPYBase):
         self.__set_stdin(input_list)
 
         key = random.random()
-        self.__switch_stream(0, key)
+        self.__switch_stream(1, key)
         result = super(YCPY,self).eval_exp(exp)
-        self.__switch_stream(key, 0)
+        self.__switch_stream(key, 1)
 
         return result, self.__read_stream(self.stdout), self.__read_stream(self.stderr)
 
