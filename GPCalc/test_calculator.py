@@ -62,6 +62,7 @@ def test_simple_exp(Calculator_Eval):
         ("sum((([1,2,3,4,5,6,7]))) ", 28),
         ("1---5", -4),
         ("-rsin(-+2)", 0.90929742682568),
+        ("+-+-+3 mod +-+5 mod -+-+ mod (-+2^ 8,6)", 3),
     )
 
     assert is_equal(Calculator_Eval("pow($$e, 3.8)"), Calculator_Eval("$$e^3.8"))
