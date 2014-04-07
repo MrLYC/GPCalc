@@ -100,6 +100,9 @@ class Calculator(object):
 
     def equation(self, exp):
         """计算方程"""
+
+        if exp.find("$$") == -1:raise Exception("could not found the unknown number")
+
         #利用Python的暗黑魔法来求解
         #出自:http://code.activestate.com/recipes/365013-linear-equations-solver-in-3-lines/
         #缺点是只能求解一元一次方程
@@ -111,6 +114,9 @@ class Calculator(object):
         exp = "(%s)-(%s)" % (e1, e2)
         self.save_var(("$$",), (1j,))#使用复数1j替换未知数
         r, o, e = self.eval(exp)
+
+        if r.imag == 0:raise Exception("could not solve this equation")
+
         r = -r.real/r.imag#实部除以虚部并取反
 
         #保存结果
