@@ -136,7 +136,7 @@ class Supporter(object):
         return {
         "tuple": cls.tuple,
         "val": cls.args2list(cls.__val),
-        "num": cls.autonum,
+        "_": cls.autonum,
         }
 
     @staticmethod

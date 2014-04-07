@@ -36,7 +36,7 @@ class Calculator(object):
                 if len(stack) < n:raise Exception("not enough operand")
 
                 args = (stack.pop(i-n) for i in xrange(n)) if n else []
-                stack.append(tk.value(*tuple(args)))
+                stack.append(tk.value(*tuple(args)))#指定操作符转换处理
 
         l = len(stack)
         if l < 1:raise Exception("this is a bug, send it to saber000@vip.qq.com please.")
