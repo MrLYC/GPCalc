@@ -43,25 +43,17 @@ class Calculator(object):
         elif l == 1:return stack[-1]
         else:raise Exception("unnecessary operand found")
 
-    def save_var(self, var, val):
+    def save_var(self, vars, vals):
         """保存变量"""
-        if var.startswith("$"):
-            #变量实际成为了YCPY虚拟环境中_开头的全局变量
-            var = var.replace("$", "_")
-            #利用YCPY能够执行代码块的功能保存
-            self._handler.exec_code("%s=%s" % (var, str(val)))
-        else:
-            raise Exception("Var should starts with $")
+        vars = ",".join(v.replace("$", "_") for v in vars)
+        vals = ",".join(str(v) for v in vals)
 
-    def del_var(self, var):
+        self._handler.exec_code("%s = %s" % (vars, vals))
+
+    def del_var(self, vars):
         """删除变量"""
-        if var.startswith("$"):
-            #变量实际成为了YCPY虚拟环境中_开头的全局变量
-            var = Convertor.format_usrname(var)
-            #删除变量
-            self._handler.exec_code("del %s" % var)
-        else:
-            raise Exception("Var should starts with $")
+        vars = ",".join(v.replace("$", "_") for v in vars)
+        self._handler.exec_code("del %s" % vars)
 
     def save_func(self, func, exp):
         """保存函数"""
@@ -103,7 +95,7 @@ class Calculator(object):
         if isinstance(r, tuple):
             r = Supporter.tuple(r)
 
-        self.save_var("$$ans", r)#保存结果
+        self.save_var(("$$ans",), (r,))#保存结果
         return r, o, e
 
     def equation(self, exp):
@@ -117,14 +109,14 @@ class Calculator(object):
         #将最后结果的复数实部除以虚部并取反就是未知数的值
         e1, e2 = exp.split("=")
         exp = "(%s)-(%s)" % (e1, e2)
-        self.save_var("$$", 1j)#使用复数1j替换未知数
+        self.save_var(("$$",), (1j,))#使用复数1j替换未知数
         r, o, e = self.eval(exp)
         r = -r.real/r.imag#实部除以虚部并取反
 
         #保存结果
-        self.save_var("$ans", r)
+        self.save_var(("$ans",), (r,))
         #保存未知数
-        self.save_var("$$", r)
+        self.save_var(("$$",), (r,))
         return r, o, e
 
     def def_var(self, exp):
@@ -136,7 +128,7 @@ class Calculator(object):
 
         if m_var:#确保是正确的命名以防被注入
             res, out, err = self.eval(exp)
-            self.save_var(m_var.groups()[0], res)
+            self.save_var((m_var.groups()[0],), (res,))
             return res, out, err
         raise Exception("illegal var name of %s" % var)
 

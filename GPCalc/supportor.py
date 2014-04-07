@@ -13,15 +13,18 @@ class func_lambda(object):
         self.exp = exp #对应的表达式
         self._handler = hdlr #所属计算器
 
-    def __call__(self, arg_lst):
-        for _l,_  in enumerate(arg_lst):
-            self._handler.save_var("$%d" % (_l+1), _) #保存变量
-        self._handler.save_var("$0", arg_lst)#保存参数
+    def __call__(self, arg_lst = tuple()):
+        var_lst = ["$0"]
+        var_lst.extend(["$%d"%(i+1) for i in xrange(len(arg_lst))])
+
+        val_lst = [arg_lst]
+        val_lst.extend(arg_lst)
+
+        self._handler.save_var(var_lst, val_lst)#保存参数
 
         r, o, e = self._handler.eval(self.exp)
 
-        for _l,_  in enumerate(arg_lst):
-            self._handler.del_var("$%d" % (_l+1)) #清除变量
+        self._handler.del_var(var_lst) #清除变量
 
         if o:
             print o
