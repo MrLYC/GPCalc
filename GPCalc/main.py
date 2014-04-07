@@ -37,7 +37,7 @@ Hope you to enjoy it!
     calc = Calculator()
     while True:
         exp = raw_input("> ")
-        if not exp:break
+        if not exp:continue
         #错误信息
         err = None
         try:
@@ -57,6 +57,7 @@ Hope you to enjoy it!
 def quick_calc(exps):
     calc = Calculator()
     for exp in exps:
+        if not exp:continue
         try:
             print ">",exp
             res, out, err = calc.xrun(exp)
