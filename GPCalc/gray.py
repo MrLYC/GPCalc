@@ -19,9 +19,13 @@ class Gray(decimal.Decimal):
         def _(self, o2, *arg, **kw):
             o_type = type(o2)
 
+            if o_type == tuple:raise Exception("unsupport operand type.")
+
             #decimal不支持与float和complex运算
             if o_type in (float, complex):
-                o1 = o_type(self)#转换当前对象为对方类型对象o1
+                o1 = self
+                if o_type == tuple:o1 = tuple([self])
+                else:o1 = o_type(self)#转换当前对象为对方类型对象o1
                 f = getattr(o1, func.__name__)#获取o1与当前对象同名方法
                 res = f(o2)
 
