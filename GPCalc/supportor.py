@@ -5,6 +5,7 @@
 
 import math
 import re
+from gray import Gray
 
 class func_lambda(object):
     """函数类"""
@@ -123,6 +124,7 @@ class Supporter(object):
         "val": cls.args2list(cls.__val),
         "ceil": cls.args2list(cls.__int),
         "len": cls.args2list(len),
+        "num": cls.autonum,
         }
 
     @staticmethod
@@ -194,3 +196,15 @@ class Supporter(object):
                 else:arr.append(e)
         else:arr.append(arg)
         return tuple(arr)
+
+    @staticmethod
+    def autonum(n_str):
+        """数字字符串"""
+        n_str = str(n_str)
+        if n_str.endswith("j"):
+            return complex(n_str)
+        if n_str.endswith("l"):
+            n_str = n_str[:-1]
+        if n_str.find(".") == -1:
+            n_str += ".0"
+        return Gray(n_str)
