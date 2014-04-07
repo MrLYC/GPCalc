@@ -61,14 +61,18 @@ FileName=$[Project-Path]test_expelement.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node2\ChildNodes\Node3]
 ClassName=TProjectFileNode
-FileName=$[Project-Path]test_graytokenizer.py
+FileName=$[Project-Path]test_gray.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node2\ChildNodes\Node4]
+ClassName=TProjectFileNode
+FileName=$[Project-Path]test_graytokenizer.py
+
+[Project\ChildNodes\Node0\ChildNodes\Node2\ChildNodes\Node5]
 ClassName=TProjectFileNode
 FileName=$[Project-Path]test_operators.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node2\ChildNodes]
-Count=5
+Count=6
 
 [Project\ChildNodes\Node0\ChildNodes\Node3]
 ClassName=TProjectFolderNode
