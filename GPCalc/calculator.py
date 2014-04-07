@@ -45,14 +45,14 @@ class Calculator(object):
 
     def save_var(self, vars, vals):
         """保存变量"""
-        vars = ",".join(v.replace("$", "_") for v in vars)
+        vars = ",".join(Convertor.format_usrname(v) for v in vars)
         vals = ",".join(str(v) for v in vals)
 
         self._handler.exec_code("%s = %s" % (vars, vals))
 
     def del_var(self, vars):
         """删除变量"""
-        vars = ",".join(v.replace("$", "_") for v in vars)
+        vars = ",".join(Convertor.format_usrname(v) for v in vars)
         self._handler.exec_code("del %s" % vars)
 
     def save_func(self, func, exp):
