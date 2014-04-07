@@ -69,12 +69,12 @@ class Supporter(object):
     def __math_apis(cls):
         """数学函数"""
         return {
-        "sin": cls.list2args(math.sin),
-        "cos": cls.list2args(math.cos),
-        "tan": cls.list2args(math.tan),
-        "arcsin": cls.list2args(math.asin),
-        "arccos": cls.list2args(math.acos),
-        "arctan": cls.list2args(math.atan),
+        "rsin": cls.list2args(math.sin),
+        "rcos": cls.list2args(math.cos),
+        "rtan": cls.list2args(math.tan),
+        "rarcsin": cls.list2args(math.asin),
+        "rarccos": cls.list2args(math.acos),
+        "rarctan": cls.list2args(math.atan),
         "sinh": cls.list2args(math.sinh),
         "cosh": cls.list2args(math.cosh),
         "tanh": cls.list2args(math.tanh),
@@ -97,6 +97,12 @@ class Supporter(object):
         "stdev": cls.args2list(cls.__stdev),
         "varp": cls.args2list(cls.__varp),
         "stdevp": cls.args2list(cls.__stdevp),
+
+        "floor": cls.args2list(cls.__floor),
+        "len": cls.args2list(len),
+
+        "rad": cls.list2args(math.radians),
+        "ang": cls.list2args(math.degrees),
         }
 
 
@@ -122,8 +128,6 @@ class Supporter(object):
         return {
         "tuple": cls.tuple,
         "val": cls.args2list(cls.__val),
-        "ceil": cls.args2list(cls.__int),
-        "len": cls.args2list(len),
         "num": cls.autonum,
         }
 
@@ -181,7 +185,7 @@ class Supporter(object):
         return Supporter.__int(n)
 
     @staticmethod
-    def __int(n):
+    def __floor(n):
         """取整"""
         return tuple(map(lambda i:type(i)(re.sub("\.\d*",".0", str(i))), n))
 
