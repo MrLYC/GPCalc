@@ -244,6 +244,42 @@ def test_function(Calculator_Xrun):
     for a,b in case2:
         assert is_equal(Calculator_Xrun(a), Calculator_Xrun(b))
 
+def test_trifunction(Calculator_Xrun):
+    case1 = (
+        ('0','0.000000'),
+        ('5','0.087266'),
+        ('10','0.174533'),
+        ('15','0.261799'),
+        ('20','0.349066'),
+        ('25','0.436332'),
+        ('30','0.523599'),
+        ('35','0.610865'),
+        ('40','0.698132'),
+        ('45','0.785398'),
+        ('50','0.872665'),
+        ('55','0.959931'),
+        ('60','1.047198'),
+        ('65','1.134464'),
+        ('70','1.221730'),
+        ('75','1.308997'),
+        ('80','1.396263'),
+        ('85','1.483530'),
+    )
+
+    for a, r in case1:
+        assert Calculator_Xrun("sin %s" % a) - Calculator_Xrun("rsin %s" % r) < 0.1 ** 3
+        assert Calculator_Xrun("cos %s" % a) - Calculator_Xrun("rcos %s" % r) < 0.1 ** 3
+        assert Calculator_Xrun("tan %s" % a) - Calculator_Xrun("rtan %s" % r) < 0.1 ** 3
+
+    case2 = (
+        ("rad arcsin 0.2588190451025", "rarcsin 0.2588190451025"),
+        ("rad arctan 0.2679491924311", "rarctan 0.2679491924311"),
+        ("rad arccos 0.7071067811865", "rarccos 0.7071067811865"),
+    )
+
+    for a, r in case2:
+        assert is_equal(Calculator_Xrun(a), Calculator_Xrun(r))
+
 def main():
     pytest.main("-x '%s'" % sys.argv[0])
 

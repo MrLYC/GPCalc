@@ -69,12 +69,20 @@ class Supporter(object):
     def __math_apis(cls):
         """数学函数"""
         return {
+        "sin": cls.list2args(lambda a:math.sin(math.radians(a))),
+        "cos": cls.list2args(lambda a:math.cos(math.radians(a))),
+        "tan": cls.list2args(lambda a:math.tan(math.radians(a))),
+        "arcsin": cls.list2args(lambda r:math.degrees(math.asin(r))),
+        "arccos": cls.list2args(lambda r:math.degrees(math.acos(r))),
+        "arctan": cls.list2args(lambda r:math.degrees(math.atan(r))),
+
         "rsin": cls.list2args(math.sin),
         "rcos": cls.list2args(math.cos),
         "rtan": cls.list2args(math.tan),
         "rarcsin": cls.list2args(math.asin),
         "rarccos": cls.list2args(math.acos),
         "rarctan": cls.list2args(math.atan),
+
         "sinh": cls.list2args(math.sinh),
         "cosh": cls.list2args(math.cosh),
         "tanh": cls.list2args(math.tanh),

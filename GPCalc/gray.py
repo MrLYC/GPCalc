@@ -15,23 +15,28 @@ class Gray(decimal.Decimal):
 
     @staticmethod
     def gray_operator(func):
-        """Static method"""
+        """自动转换"""
         def _(self, o2, *arg, **kw):
             o_type = type(o2)
 
+            #decimal不支持与float和complex运算
             if o_type in (float, complex):
-                o1 = o_type(self)
-                f = getattr(o1, func.__name__)
-                return f(o2)
+                o1 = o_type(self)#转换当前对象为对方类型对象o1
+                f = getattr(o1, func.__name__)#获取o1与当前对象同名方法
+                res = f(o2)
 
-            res = func(self, o2, *arg, **kw)
-            if isinstance(res, decimal.Decimal):
-                return Gray(res)
+            else:res = func(self, o2, *arg, **kw)
+
+            #转换成Gray
+            if isinstance(res, (float, decimal.Decimal, int)):
+                res = Gray(res)
+
             return res
         return _
 
     @staticmethod
     def grayresult(method):
+        """将结果包装成Gray类型"""
         def _(self, *arg, **kw):
             return Gray(method(self, *arg, **kw))
         return _
