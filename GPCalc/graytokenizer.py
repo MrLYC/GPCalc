@@ -15,7 +15,9 @@ def pretokens(exp):
     """利用generate_tokens进行预处理"""
     for tks in generate_tokens(StringIO(exp).readline):
         tk = tks[1]
-        tk = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk)
+        if tks[0] == token.NUMBER:
+            tk = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk)
+            tk = Configuration.OctRegex.sub(lambda m:str(int(m.group(0), 8)), tk)
         yield tk
     raise StopIteration()
 
@@ -84,3 +86,4 @@ class GrayToken(object):
             else:
                 raise Exception("tokens finished error because of error expression")
         return self.tokens
+

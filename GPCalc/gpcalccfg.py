@@ -20,11 +20,12 @@ class Configuration(object):
     UnknownNumber = "$$"
     AnswerConstant = "$$ans"
 
+    AutoNumFunc = "_"
+
     UserVarRegex = re.compile("^\s*(\$[a-z]+\d*)\s*$")
     UserFuncRegex = re.compile("^\s*(#[a-z]+\d*)\s*$")
-
     HexRegex = re.compile("0x[0-9a-f]+")
-    AutoNumFunc = "_"
+    OctRegex = re.compile("0o[0-8]+")
 
 class OPLEVEL(object):
     """

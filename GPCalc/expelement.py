@@ -31,12 +31,12 @@ class ElementTypeEnum(object):
     表达式元素类型枚举
     """
     UOP = ElementType("UOP", OPRegex.UOPRegex)#单目运算符
-    NUM = ElementType("NUM", OPRegex.NUMRegex)#数字
     BOP = ElementType("BOP", OPRegex.BOPRegex)#二目运算符
     VAR = ElementType("VAR", OPRegex.VARRegex)#合法变量
     LBK = ElementType("LBK", OPRegex.LBKRegex)#左括号
     RBK = ElementType("RBK", OPRegex.RBKRegex)#右括号
     CMM = ElementType("CMM", OPRegex.CMMRegex)#逗号
+    NUM = ElementType("NUM", OPRegex.NUMRegex)#数字
     NON = ElementType("NON", OPRegex.NONRegex)#无
 
 class Element(object):
