@@ -18,21 +18,32 @@ Details: https://git.oschina.net/Mr_LYC/GPCalc
 
     Features
 Evaluation:
-    fact(0x64) / $$e
-    Use the $$ans as the result of this
+    fact(0x64) / %se
+    Use the %s as the result of this
     expression in the next expression.
 
 Defines:
-    $varname:expression
-    #lambda:expression
-    Use $var or #func in your expression later
+    %svarname%sexpression
+    %slambda%sexpression
+    Use %svar or %sfunc in your expression later
 
 Solve an equation:
-    1 + 2 * $$ = 3 / 4
-    $$ is representing the unknown number.
+    1 + 2 * %s = 3 / 4
+    %s is representing the unknown number.
 
 Hope you to enjoy it!
-"""
+""" % (
+    Configuration.ConstantPrefix,
+    Configuration.AnswerConstant,
+    Configuration.VarPrefix,
+    Configuration.UserDeclarator,
+    Configuration.FuncPrefix,
+    Configuration.UserDeclarator,
+    Configuration.VarPrefix,
+    Configuration.FuncPrefix,
+    Configuration.UnknownNumber,
+    Configuration.UnknownNumber
+)
 
 
     calc = Calculator()
