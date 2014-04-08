@@ -9,10 +9,15 @@ import token
 from StringIO import StringIO
 from re import compile
 from expelement import ElementTypeEnum, Element
+from gpcalccfg import Configuration
 
 def pretokens(exp):
     """利用generate_tokens进行预处理"""
-    return (tk[1] for tk in generate_tokens(StringIO(exp).readline))
+    for tks in generate_tokens(StringIO(exp).readline):
+        tk = tks[1]
+        tk = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk)
+        yield tk
+    raise StopIteration()
 
 class GrayToken(object):
     def __init__(self, exp):

@@ -298,6 +298,23 @@ def test_trifunction(Calculator_Xrun):
     for a, r in case2:
         assert is_equal(Calculator_Xrun(a), Calculator_Xrun(r))
 
+def test_hex(Calculator_Xrun):
+    case = (
+        ('0x37', 55),
+        ('0x9', 9),
+        ('0x43', 67),
+        ('0x20', 32),
+        ('0x53', 83),
+        ('0x6e', 110),
+        ('0x59', 89),
+        ('0x6d', 109),
+        ('0x5e', 94),
+        ('0x54', 84),
+    )
+
+    for a, r in case:
+        assert is_equal(Calculator_Xrun(a), r)
+
 def main():
     pytest.main("-x '%s'" % sys.argv[0])
 

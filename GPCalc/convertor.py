@@ -57,7 +57,6 @@ class Convertor(object):
         exp = exp.strip()#取出前后空白字符
         exp = exp.lower()#转为小写
         exp = cls.format_usrname(exp)
-        exp = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), exp)#处理十六进制表示的数值
         return exp
 
     @classmethod
