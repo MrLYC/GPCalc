@@ -4,20 +4,7 @@
 # Created: 2014-04-03
 
 import re
-
-class OPLEVEL(object):
-    """
-    运算符优先级与权值
-    """
-    LBK = 00,
-    CMM = 10,
-    ADD = 20,
-    SUB = 20,
-    MUL = 30,
-    DIV = 30,
-    MOD = 40,
-    POW = 40,
-    UOP = 50,
+from gpcalccfg import OPLEVEL
 
 class Operator(object):
     """

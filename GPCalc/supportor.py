@@ -6,6 +6,7 @@
 import math
 import re
 from gray import Gray
+from gpcalccfg import Configuration
 
 class func_lambda(object):
     """函数类"""
@@ -14,8 +15,8 @@ class func_lambda(object):
         self._handler = hdlr #所属计算器
 
     def __call__(self, arg_lst = tuple()):
-        var_lst = ["$0"]
-        var_lst.extend(["$%d"%(i+1) for i in xrange(len(arg_lst))])
+        var_lst = ["%s0" % Configuration.VarPrefix]
+        var_lst.extend(["%s%d"%(Configuration.VarPrefix,(i+1)) for i in xrange(len(arg_lst))])
 
         val_lst = [arg_lst]
         val_lst.extend(arg_lst)

@@ -9,6 +9,7 @@ import operators
 import ycpy
 import re
 from supportor import *
+from gpcalccfg import Configuration
 
 class Calculator(object):
     """
@@ -57,8 +58,8 @@ class Calculator(object):
 
     def save_func(self, func, exp):
         """保存函数"""
-        if func.startswith("#"):
-            #变量实际成为了YCPY虚拟环境中f_开头的全局变量
+        if func.startswith(Configuration.FuncPrefix):
+            #实际成为了YCPY虚拟环境中全局变量
             func = Convertor.format_usrname(func)
             lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
             self._handler.add_api(func, lmd)#加入到虚拟空间中
@@ -71,10 +72,10 @@ class Calculator(object):
         err = ""
         out = ""
 
-        if exp.find(":") != -1:
-            if exp.startswith("#"):#函数声明
+        if exp.find(Configuration.UserDeclarator) != -1:
+            if exp.startswith(Configuration.FuncPrefix):#函数声明
                 res, out, err = self.def_func(exp)
-            elif exp.startswith("$"):#变量声明
+            elif exp.startswith(Configuration.VarPrefix):#变量声明
                 res, out, err = self.def_var(exp)
             else:raise Exception("unknown operator")
 
@@ -95,13 +96,13 @@ class Calculator(object):
         if isinstance(r, tuple):
             r = Supporter.tuple(r)
 
-        self.save_var(("$$ans",), (r,))#保存结果
+        self.save_var((Configuration.AnswerConstant,), (r,))#保存结果
         return r, o, e
 
     def equation(self, exp):
         """计算方程"""
 
-        if exp.find("$$") == -1:raise Exception("could not found the unknown number")
+        if exp.find(Configuration.ConstantPrefix) == -1:raise Exception("could not found the unknown number")
 
         #利用Python的暗黑魔法来求解
         #出自:http://code.activestate.com/recipes/365013-linear-equations-solver-in-3-lines/
@@ -112,7 +113,7 @@ class Calculator(object):
         #将最后结果的复数实部除以虚部并取反就是未知数的值
         e1, e2 = exp.split("=")
         exp = "(%s)-(%s)" % (e1, e2)
-        self.save_var(("$$",), (1j,))#使用复数1j替换未知数
+        self.save_var((Configuration.UnknownNumber,), (1j,))#使用复数1j替换未知数
         r, o, e = self.eval(exp)
 
         if r.imag == 0:raise Exception("could not solve this equation")
@@ -120,9 +121,9 @@ class Calculator(object):
         r = -r.real/r.imag#实部除以虚部并取反
 
         #保存结果
-        self.save_var(("$ans",), (r,))
+        self.save_var((Configuration.AnswerConstant,), (r,))
         #保存未知数
-        self.save_var(("$$",), (r,))
+        self.save_var((Configuration.UnknownNumber,), (r,))
         return r, o, e
 
     def def_var(self, exp):
@@ -130,7 +131,7 @@ class Calculator(object):
         i = exp.find(":")
         var = exp[:i]#预计的变量名
         exp = exp[i+1:]#变量的表达式
-        m_var = re.search("^\s*(\$[a-z]+\d*)\s*$", var)
+        m_var = Configuration.UserVarRegex.search(var)
 
         if m_var:#确保是正确的命名以防被注入
             res, out, err = self.eval(exp)
@@ -144,7 +145,7 @@ class Calculator(object):
         name = exp[:i]#预计的函数名
         exp = exp[i+1:]#函数内容
 
-        m_name = re.search("^\s*(#[a-z]+\d*)\s*$", name)
+        m_name = Configuration.UserFuncRegex.search(name)
 
         if m_name:#确保是正确的命名以防被注入
             self.save_func(m_name.groups()[0], exp)

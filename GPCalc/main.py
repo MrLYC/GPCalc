@@ -5,6 +5,7 @@
 
 import sys
 from calculator import Calculator
+from gpcalccfg import Configuration
 
 def by_input():
     """输入表达式"""
@@ -44,7 +45,7 @@ Hope you to enjoy it!
             #智能执行并返回结果和错误信息
             res, out, err = calc.xrun(exp)
             if out:print out
-            if res != None:print "$$ans:", res
+            if res != None:print "%s:" % Configuration.AnswerConstant, res
         except:
             info = sys.exc_info()
             err = "\n".join([str(i) for i in info]) + "\n"
@@ -62,7 +63,7 @@ def quick_calc(exps):
             print ">",exp
             res, out, err = calc.xrun(exp)
             if out:print out
-            if res != None:print "$$ans:", res
+            if res != None:print "%s:" % Configuration.AnswerConstant, res
         except:
             info = sys.exc_info()
             err = "\n".join([str(i) for i in info]) + "\n"

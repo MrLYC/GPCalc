@@ -7,6 +7,7 @@ import graytokenizer
 from expelement import ElementTypeEnum
 import operators
 import re
+from gpcalccfg import Configuration
 
 class Convertor(object):
     """
@@ -46,8 +47,8 @@ class Convertor(object):
 
     @classmethod
     def format_usrname(cls, exp):
-        exp = exp.replace("$", "_")#处理变量
-        exp = exp.replace("#", "func_")#处理函数
+        exp = exp.replace(Configuration.VarPrefix, Configuration.VarRealPrefix)#处理变量
+        exp = exp.replace(Configuration.FuncPrefix, Configuration.FuncRealPrefix)#处理函数
         return exp
 
     @classmethod
@@ -56,7 +57,7 @@ class Convertor(object):
         exp = exp.strip()#取出前后空白字符
         exp = exp.lower()#转为小写
         exp = cls.format_usrname(exp)
-        exp = re.sub("0x[0-9a-f]+",lambda m:str(int(m.group(0), 16)), exp)#处理十六进制表示的数值
+        exp = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), exp)#处理十六进制表示的数值
         return exp
 
     @classmethod

@@ -7,11 +7,12 @@ import sys
 import pytest
 
 import expelement
+import re
 
 #ElementType类
 #-------------------------------------------------------------------------------
 def test_ElementType():
-    et = expelement.ElementType("abc", "\d*")
+    et = expelement.ElementType("abc", re.compile("\d*"))
 
     assert str(et) == "abc"
     assert et("132.5") == "132"

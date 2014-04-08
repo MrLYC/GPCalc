@@ -4,15 +4,16 @@
 # Created: 2014-04-03
 
 import re
+from gpcalccfg import OPRegex
 
 class ElementType(object):
     """
     表达式元素类型
     """
-    def __init__(self, name, pattern):
+    def __init__(self, name, regex):
         super(ElementType, self).__init__()
         self.name = name
-        self.regex = re.compile(pattern)
+        self.regex = regex
 
     def __call__(self, obj_str):
         match = self.regex.search(obj_str)#使用对应的regex来匹配
@@ -29,14 +30,14 @@ class ElementTypeEnum(object):
     """
     表达式元素类型枚举
     """
-    UOP = ElementType("UOP", r"^(\-|\+|[a-z]\w*)$")#单目运算符
-    NUM = ElementType("NUM", r"^(\.|\d)+[jl]?$")#数字
-    BOP = ElementType("BOP", r"^(\W+|[a-z]+)$")#二目运算符
-    VAR = ElementType("VAR", r"^_[a-z_0-9]+$")#合法变量
-    LBK = ElementType("LBK", r"^[\(\[]$")#左括号
-    RBK = ElementType("RBK", r"^[\)\]]$")#右括号
-    CMM = ElementType("CMM", r"^,$")#逗号
-    NON = ElementType("NON", r"^$")#无
+    UOP = ElementType("UOP", OPRegex.UOPRegex)#单目运算符
+    NUM = ElementType("NUM", OPRegex.NUMRegex)#数字
+    BOP = ElementType("BOP", OPRegex.BOPRegex)#二目运算符
+    VAR = ElementType("VAR", OPRegex.VARRegex)#合法变量
+    LBK = ElementType("LBK", OPRegex.LBKRegex)#左括号
+    RBK = ElementType("RBK", OPRegex.RBKRegex)#右括号
+    CMM = ElementType("CMM", OPRegex.CMMRegex)#逗号
+    NON = ElementType("NON", OPRegex.NONRegex)#无
 
 class Element(object):
     """
