@@ -140,7 +140,7 @@ class Supporter(object):
         return {
         "tuple": cls.tuple,
         "val": cls.args2list(cls.__val),
-        "_": cls.autonum,
+        Configuration.AutoNumFunc: cls.autonum,
         }
 
     @staticmethod

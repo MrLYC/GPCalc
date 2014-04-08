@@ -9,7 +9,6 @@ class Configuration(object):
     """
     配置
     """
-
     UserDeclarator = ":"
     VarPrefix = "$"
     FuncPrefix = "#"
@@ -25,7 +24,7 @@ class Configuration(object):
     UserFuncRegex = re.compile("^\s*(#[a-z]+\d*)\s*$")
 
     HexRegex = re.compile("0x[0-9a-f]+")
-
+    AutoNumFunc = "_"
 
 class OPLEVEL(object):
     """
