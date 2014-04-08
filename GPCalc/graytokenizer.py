@@ -14,11 +14,18 @@ from gpcalccfg import Configuration
 def pretokens(exp):
     """利用generate_tokens进行预处理"""
     for tks in generate_tokens(StringIO(exp).readline):
-        tk = tks[1]
-        if tks[0] == token.NUMBER:
-            tk = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk)
-            tk = Configuration.OctRegex.sub(lambda m:str(int(m.group(0), 8)), tk)
-        yield tk
+        tk_t, tk_v = tks[0], tks[1]
+
+        if tk_v.startswith("mod"):
+            t = tk_v[3:]
+            if t:
+                tk_v = t
+                yield "mod"
+
+        tk_v = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk_v)
+        tk_v = Configuration.OctRegex.sub(lambda m:str(int(m.group(0), 8)), tk_v)
+
+        yield tk_v
     raise StopIteration()
 
 class GrayToken(object):
@@ -86,4 +93,3 @@ class GrayToken(object):
             else:
                 raise Exception("tokens finished error because of error expression")
         return self.tokens
-
