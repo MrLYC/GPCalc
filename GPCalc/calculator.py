@@ -59,6 +59,12 @@ class Calculator(object):
     def save_func(self, func, exp):
         """保存函数"""
         if func.startswith(Configuration.FuncPrefix):
+
+            if exp.find(Configuration.UserDeclarator) != -1:
+                raise Exception("invalid syntax")
+            if exp.find("=") != -1:
+                raise Exception("invalid syntax")
+
             #实际成为了YCPY虚拟环境中全局变量
             func = Convertor.format_usrname(func)
             lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
@@ -88,9 +94,10 @@ class Calculator(object):
         if res == None:res = tuple()
         return res, out, err
 
-    def eval(self, exp, *arg):
+    def eval(self, exp, is_pytype = False):
         """计算表达式"""
-        exp = self.format_exp(exp)#转换成等价的Python表达式
+        if not is_pytype:exp = self.format_exp(exp)#转换成等价的Python表达式
+
         r, o, e = self._handler.eval_exp(exp)
 
         if isinstance(r, tuple):

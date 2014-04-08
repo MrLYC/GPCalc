@@ -11,8 +11,8 @@ from gpcalccfg import Configuration
 class func_lambda(object):
     """函数类"""
     def __init__(self, exp, hdlr):
-        self.exp = exp #对应的表达式
         self._handler = hdlr #所属计算器
+        self.exp = hdlr.format_exp(exp) #先转换对应的表达式
 
     def __call__(self, arg_lst = tuple()):
         var_lst = ["%s0" % Configuration.VarPrefix]
@@ -23,7 +23,7 @@ class func_lambda(object):
 
         self._handler.save_var(var_lst, val_lst)#保存参数
 
-        r, o, e = self._handler.eval(self.exp)
+        r, o, e = self._handler.eval(self.exp, True)
 
         self._handler.del_var(var_lst) #清除变量
 
