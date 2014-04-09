@@ -10,6 +10,7 @@ import ycpy
 import re
 from supportor import *
 from gpcalccfg import Configuration
+from collections import deque
 
 class Calculator(object):
     """
@@ -36,7 +37,7 @@ class Calculator(object):
 
                 if len(stack) < n:raise Exception("not enough operand")
 
-                args = (stack.pop(i-n) for i in xrange(n)) if n else []
+                args = (stack.pop(i-n) for i in xrange(n)) if n else tuple()
                 stack.append(tk.value(*tuple(args)))#指定操作符转换处理
 
         l = len(stack)

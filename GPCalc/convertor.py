@@ -8,6 +8,7 @@ from expelement import ElementTypeEnum
 import operators
 import re
 from gpcalccfg import Configuration
+from collections import deque
 
 class Convertor(object):
     """
@@ -70,8 +71,8 @@ class Convertor(object):
     def topostfix(cls, tokens):
         """转为后缀表达式"""
         ETE = ElementTypeEnum
-        postfix = []#保存后缀表达式
-        op_stack = []#运算符栈
+        postfix = deque()#保存后缀表达式
+        op_stack = deque()#运算符栈
 
         #最难看的一段代码,因为没有参考资料,纯原创
         #但是工作的挺好,有空再重构
@@ -93,7 +94,9 @@ class Convertor(object):
                 op_stack.append(tk)
 
         #将栈中剩余的操作符追加到表达式
-        else:postfix += op_stack[::-1]
+        else:
+            op_stack.reverse()
+            postfix.extend(op_stack)
 
         return postfix
 
@@ -104,3 +107,5 @@ class Convertor(object):
         gtk = cls.tokenize(exp)#获取标识符
         postfix = cls.topostfix(gtk)#转为逆波兰表达式
         return postfix
+
+Convertor.format("8-(3+2*6)/5+4")

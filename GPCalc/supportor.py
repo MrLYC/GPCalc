@@ -8,6 +8,7 @@ import cmath
 import re
 from gray import Gray
 from gpcalccfg import Configuration
+from collections import deque
 
 class func_lambda(object):
     """函数类"""
@@ -227,7 +228,7 @@ class Supporter(object):
     @staticmethod
     def tuple(arg):
         """参数包装成数组(tuple)"""
-        arr = []
+        arr = deque()
         if isinstance(arg, tuple):
             for e in arg:
                 if isinstance(e, (list, tuple)):

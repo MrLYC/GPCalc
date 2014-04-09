@@ -10,6 +10,7 @@ from StringIO import StringIO
 from re import compile
 from expelement import ElementTypeEnum, Element
 from gpcalccfg import Configuration
+from collections import deque
 
 def pretokens(exp):
     """利用generate_tokens进行预处理"""
@@ -34,7 +35,7 @@ class GrayToken(object):
         try:self.context = deque(pretokens(exp))
         except:raise Exception("unrecognizable expression")
 
-        self.tokens = []
+        self.tokens = deque()
         self.state = self.init_state
         self.done = None
 
