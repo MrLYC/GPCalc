@@ -80,6 +80,9 @@ def test_simple_exp(Calculator_Eval):
         ("-1--0-+2+-3 mod 4^3*-3", 78),
         ("(1-2) --(2*3+1)", 6),
         ("1 mod 3 + mod(1,2)", 2),
+        ("2mod3", 2),
+        ("2 modmod(8,5)", 2),
+        ("2modmod(8,5)", 2),
     )
 
     assert is_equal(Calculator_Eval("pow($$e, 3.8)"), Calculator_Eval("$$e^3.8"))
