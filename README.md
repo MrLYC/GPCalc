@@ -141,5 +141,7 @@
 1. 添加帐号：lycbot@appspot.com。
 2. 请向该帐号发送你的表达式，每个表达式占一行。
 3. 因为该聊天机器人托管在Google App Engine上，因此一次执行完后会退出，所定义的函数和变量会被删除。
+
+注：因为GAE的Python版本较低和限制较多，其上面搭载的GPClac是修改过的，会有一些差别。
  
   [1]: https://git.oschina.net/Mr_LYC/GPCalc/blob/master/%E9%A2%98%E7%9B%AE.md#tree-content-holder
