@@ -48,7 +48,12 @@ Hope you to enjoy it!
 
     calc = Calculator()
     while True:
-        exp = raw_input("> ")
+
+        try:
+            exp = raw_input("> ")
+        except EOFError:
+            break
+
         if not exp:continue
         #错误信息
         err = None
