@@ -4,6 +4,7 @@
 # Created: 2014-04-06
 
 import math
+import cmath
 import re
 from gray import Gray
 from gpcalccfg import Configuration
@@ -115,8 +116,27 @@ class Supporter(object):
 
         "rad": cls.list2args(math.radians),
         "ang": cls.list2args(math.degrees),
-        }
 
+        "zsqrt": cls.list2args(cmath.sqrt),
+        "zexp": cls.list2args(cmath.exp),
+
+        "zlog": cls.list2args(cmath.log),
+        "zlog10": cls.list2args(cmath.log10),
+        "zln": cls.list2args(lambda a: cmath.log(a)),
+
+        "zsin": cls.list2args(cmath.sin),
+        "zcos": cls.list2args(cmath.cos),
+        "ztan": cls.list2args(cmath.tan),
+        "zarcsin": cls.list2args(cmath.asin),
+        "zarccos": cls.list2args(cmath.acos),
+        "zarctan": cls.list2args(cmath.atan),
+        "zsinh": cls.list2args(cmath.sinh),
+        "zcosh": cls.list2args(cmath.cosh),
+        "ztanh": cls.list2args(cmath.tanh),
+
+        "zreal": cls.list2args(lambda n: n.real if isinstance(n, complex) else n),
+        "zimag": cls.list2args(lambda n: n.imag if isinstance(n, complex) else 0),
+        }
 
     @classmethod
     def __const_apis(cls):
@@ -132,7 +152,6 @@ class Supporter(object):
         "__g": 6.67428*math.pow(10,-11), #引力常数
         "__f": 96485.309,#法拉第常数
         }
-
 
     @classmethod
     def __tools_apis(cls):
