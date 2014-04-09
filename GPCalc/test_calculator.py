@@ -341,10 +341,10 @@ def test_complex(Calculator_Xrun):
     case = (
         ("zsqrt(-1)", 1j),
         ("zlog(-1)", 3.141592653589793j),
-        ("zlog10(-$$pi)", (1.1447298858494002+3.141592653589793j)),
+        ("zlog10(-$$pi)", (0.4971498726941338+1.3643763538418412j)),
         ("zln(-$$e)", (1+3.141592653589793j)),
 
-        ("zsin(pi/2j)", -2.3012989023072947j),
+        ("zsin($$pi/2j)", -2.3012989023072947j),
         ("zcos(-1j)", 1.5430806348152437),
         ("ztan(3.2j)", 0.9966823978396512j),
         ("zarcsin(2)", (1.5707963267948966+1.3169578969248166j)),
@@ -353,7 +353,7 @@ def test_complex(Calculator_Xrun):
 
         ("zsinh(-3j)", -0.1411200080598672j),
         ("zcosh(-0.5j)", 0.8775825618903728),
-        (" tanh(0.5j)", 0.5463024898437905j),
+        (" ztanh(0.5j)", 0.5463024898437905j),
 
         (" zreal(1.2+0.5j)", 1.2),
         (" zimag(5.8-0.5j)", -0.5),
@@ -361,6 +361,19 @@ def test_complex(Calculator_Xrun):
 
     for x, r in case:
         assert is_equal(Calculator_Xrun(x), r, x)
+
+def test_array_operator(Calculator_Xrun):
+
+    case = (
+        ("$x:(1,2,3,4,5)", (1,2,3,4,5)),
+        ("head $x", 1),
+        ("tail $x", (2,3,4,5)),
+        ("left $x", (1,2)),
+        ("right $x", (3,4,5)),
+    )
+
+    for x, r in case:
+        assert Calculator_Xrun(x) == r
 
 def main():
     pytest.main("-x '%s'" % sys.argv[0])

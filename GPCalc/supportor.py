@@ -159,6 +159,10 @@ class Supporter(object):
         return {
         "tuple": cls.tuple,
         "val": cls.args2list(cls.__val),
+        "head": cls.args2list(lambda l: l[0] if l else tuple()),
+        "tail": cls.args2list(lambda l: l[1:]),
+        "left": cls.args2list(lambda l: l[:len(l)/2]),
+        "right": cls.args2list(lambda l: l[len(l)/2:]),
         Configuration.AutoNumFunc: cls.autonum,
         }
 
