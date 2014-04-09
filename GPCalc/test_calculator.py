@@ -358,8 +358,8 @@ def test_complex(Calculator_Xrun):
         ("zcosh(-0.5j)", 0.8775825618903728),
         (" ztanh(0.5j)", 0.5463024898437905j),
 
-        (" zreal(1.2+0.5j)", 1.2),
-        (" zimag(5.8-0.5j)", -0.5),
+        (" real(1.2+0.5j)", 1.2),
+        (" imag(5.8-0.5j)", -0.5),
     )
 
     for x, r in case:

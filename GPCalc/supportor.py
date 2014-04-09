@@ -134,8 +134,8 @@ class Supporter(object):
         "zcosh": cls.list2args(cmath.cosh),
         "ztanh": cls.list2args(cmath.tanh),
 
-        "zreal": cls.list2args(lambda n: n.real if isinstance(n, complex) else n),
-        "zimag": cls.list2args(lambda n: n.imag if isinstance(n, complex) else 0),
+        "real": cls.list2args(lambda n: n.real if isinstance(n, complex) else n),
+        "imag": cls.list2args(lambda n: n.imag if isinstance(n, complex) else 0),
         }
 
     @classmethod
