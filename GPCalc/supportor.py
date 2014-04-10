@@ -8,6 +8,7 @@ import cmath
 import re
 from gpcalccfg import Configuration
 from collections import deque
+import grape
 
 class func_lambda(object):
     """函数类"""
@@ -134,8 +135,8 @@ class Supporter(object):
         "zcosh": cls.list2args(cmath.cosh),
         "ztanh": cls.list2args(cmath.tanh),
 
-        "real": cls.list2args(lambda n: n.real if isinstance(n, complex) else n),
-        "imag": cls.list2args(lambda n: n.imag if isinstance(n, complex) else 0),
+        "real": cls.list2args(cls.__real),
+        "imag": cls.list2args(cls.__imag),
         }
 
     @classmethod
@@ -209,19 +210,30 @@ class Supporter(object):
         return math.sqrt(Supporter.__varp(l))
 
     @staticmethod
-    def __val(n):
+    def __real(n):
+        """数值的实部"""
+        return n.real if isinstance(n, complex) else n
+
+    @staticmethod
+    def __imag(n):
+        """数值的虚部"""
+        return n.imag if isinstance(n, complex) else 0
+
+    @classmethod
+    def __val(cls, n):
         """各种进制下的整型表示方式"""
+        n = map(cls.__real, n)
         n = map(int, n)
         print "Dec: (%s)" % ",".join(map(str, n))
-        print "Hex: (%s)" % ",".join(map(lambda n: str(hex(n)), n))
-        print "Oct: (%s)" % ",".join(map(lambda n: str(oct(n)), n))
-        print "Bin: (%s)" % ",".join(map(lambda n: str(bin(n)), n))
+        print "Hex: (%s)" % ",".join(map(hex, n))
+        print "Oct: (%s)" % ",".join(map(oct, n))
+        print "Bin: (%s)" % ",".join(map(bin, n))
         return Supporter.__floor(n)
 
     @staticmethod
     def __floor(n):
         """取整"""
-        return tuple(map(lambda i:type(i)(re.sub("\.\d*",".0", str(i))), n))
+        return tuple(map(lambda i:grape.autonum(re.sub("\.\d*",".0", str(i))), n))
 
     @staticmethod
     def tuple(arg):
