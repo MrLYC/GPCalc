@@ -1,5 +1,5 @@
 ﻿# coding: UTF-8
-# Name:Gray表达式的Tokenizer
+# Name:Grape表达式的Tokenizer
 # Author: LYC
 # Created: 2014-03-28
 
@@ -29,7 +29,8 @@ def pretokens(exp):
         yield tk_v
     raise StopIteration()
 
-class GrayToken(object):
+class GrapeToken(object):
+    """词法分析器"""
     def __init__(self, exp):
 
         try:self.context = deque(pretokens(exp))

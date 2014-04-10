@@ -23,7 +23,7 @@ def test_preprocessing():
     for c, r in case:
         assert Convertor.preprocessing(c) == r
 
-def test_graytoken():
+def test_grapetoken():
     exp = "sum([-1+1*2,4+5/2^2,3mod mod(3,2)])"
     res = (
         "sum",

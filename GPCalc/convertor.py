@@ -63,7 +63,7 @@ class Convertor(object):
     def tokenize(cls, exp):
         """获取标记"""
         #获取葡萄表达式的标识符
-        gtk = grapetokenizer.GrayToken(exp)
+        gtk = grapetokenizer.GrapeToken(exp)
         return map(cls.__replace, gtk())#检查并替换标识符
 
     @classmethod
@@ -106,5 +106,3 @@ class Convertor(object):
         gtk = cls.tokenize(exp)#获取标识符
         postfix = cls.topostfix(gtk)#转为逆波兰表达式
         return postfix
-
-Convertor.format("8-(3+2*6)/5+4")

@@ -1,23 +1,23 @@
 ﻿# coding: UTF-8
-# Name: Gray单元测试
+# Name: Grape单元测试
 # Author: LYC
 # Created: 2014-04-07
 
 import sys
 import pytest
-import gray
+import grape
 import random
 import math
 
 @pytest.fixture
-def Gray():
-    return gray.Gray
+def Grape():
+    return grape.Grape
 
-def test_gray_as_float(Gray):
+def test_grape_as_float(Grape):
     a = 0.2
     b = 1.7
-    da = Gray(a)
-    db = Gray(b)
+    da = Grape(a)
+    db = Grape(b)
 
     assert da == a
     assert da + db == a + b
@@ -49,11 +49,11 @@ def test_gray_as_float(Gray):
     assert db % a == b % da
     assert db ** a == b ** da
 
-def test_gray_as_int(Gray):
+def test_grape_as_int(Grape):
     a = 2
     b = 7
-    da = Gray(a)
-    db = Gray(b)
+    da = Grape(a)
+    db = Grape(b)
 
     assert da == a
     assert da + db == a + b
@@ -85,10 +85,10 @@ def test_gray_as_int(Gray):
     assert db % a == b % da
     assert db ** a == b ** da
 
-def test_gray_as_complex(Gray):
+def test_grape_as_complex(Grape):
     a = 2.2
     b = 7.7j
-    da = Gray("2.2")
+    da = Grape("2.2")
 
     assert b + da == b + a
     assert b - da == b - a
@@ -104,8 +104,8 @@ def test_gray_as_complex(Gray):
     assert b % a == b % da
     assert b ** a == b ** da
 
-def test_gray_in_tuple(Gray):
-    assert (Gray("0.2"), Gray(5)) == (0.2, 5)
+def test_grape_in_tuple(Grape):
+    assert (Grape("0.2"), Grape(5)) == (0.2, 5)
 
 def main():
     pytest.main("-x '%s'" % sys.argv[0])

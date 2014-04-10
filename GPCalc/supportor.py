@@ -16,10 +16,10 @@ class func_lambda(object):
         self.exp = hdlr.format_exp(exp) #先转换对应的表达式
 
     def __call__(self, arg_lst = tuple()):
-        var_lst = ["%s0" % Configuration.VarPrefix]
-        var_lst.extend(["%s%d"%(Configuration.VarPrefix,(i+1)) for i in xrange(len(arg_lst))])
+        var_lst = deque(["%s0" % Configuration.VarPrefix])
+        var_lst.extend(("%s%d"%(Configuration.VarPrefix,(i+1)) for i in xrange(len(arg_lst))))
 
-        val_lst = [arg_lst]
+        val_lst = deque([arg_lst])
         val_lst.extend(arg_lst)
 
         self._handler.save_var(var_lst, val_lst)#保存参数

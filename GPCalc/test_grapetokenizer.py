@@ -1,15 +1,13 @@
 ﻿# coding: UTF-8
-# Name: graytokenizer单元测试
+# Name: grapetokenizer单元测试
 # Author: LYC
 # Created: 2014-03-28
 
 import sys
 import pytest
-import graytokenizer
+import grapetokenizer
 
-
-
-def test_graytoken():
+def test_grapetoken():
     case = (
         ("2014-0o3-0x1a", (("NUM", "2014"),("BOP", "-"),("NUM", "3"),("BOP", "-"),("NUM", "26"))),
         ("1991", (("NUM", "1991"),)),
@@ -26,7 +24,7 @@ def test_graytoken():
     )
 
     for c, r in case:
-        gt = graytokenizer.GrayToken(c)
+        gt = grapetokenizer.grapeToken(c)
         res = gt()
 
         t = res[-1]

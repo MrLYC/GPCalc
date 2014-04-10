@@ -25,7 +25,7 @@ class Calculator(object):
     def format_exp(self, exp):
         """格式化表达式"""
         fmt_tks = Convertor.format(exp)#获得等价的后缀表达式
-        stack = []
+        stack = deque()
 
         #后缀表达式转换
         #参考:http://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95
@@ -39,12 +39,15 @@ class Calculator(object):
                 stack.append(str(tk.value))
             elif isinstance(tk.value, operators.Operator):
                 #运算符则出栈opnum(可操作数目)个操作数进行转换
-                n = tk.value.opnum
 
+                n = tk.value.opnum
                 if len(stack) < n:raise Exception("not enough operand")
 
-                args = (stack.pop(i-n) for i in xrange(n)) if n else tuple()
-                stack.append(tk.value(*tuple(args)))#指定操作符转换处理
+                args = deque()
+                for i in xrange(n):#出栈运算符指定数目的操作数
+                    args.appendleft(stack.pop())
+
+                stack.append(tk.value(*args))#指定操作符转换处理
 
         l = len(stack)
         if l < 1:raise Exception("this is a bug, send it to saber000@vip.qq.com please.")
