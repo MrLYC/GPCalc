@@ -216,7 +216,7 @@ class Supporter(object):
         print "Hex: (%s)" % ",".join(map(lambda n: str(hex(n)), n))
         print "Oct: (%s)" % ",".join(map(lambda n: str(oct(n)), n))
         print "Bin: (%s)" % ",".join(map(lambda n: str(bin(n)), n))
-        return Supporter.__int(n)
+        return Supporter.__floor(n)
 
     @staticmethod
     def __floor(n):

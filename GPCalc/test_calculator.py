@@ -185,6 +185,7 @@ def test_tuple(Calculator_Xrun):
         ("stdevp $x", "stdevp($x)"),
 
         ("floor(1,2.2,3.8)", "(1,2,3)"),
+        ("val(8.3,1.2)", "(8, 1)"),
 
         ("(1,2)", "[1,2]"),
         ("$x:$$ans", "(1,2)"),
