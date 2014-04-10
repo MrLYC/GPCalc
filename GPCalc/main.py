@@ -95,4 +95,5 @@ def main(argv):
         quick_calc(argv[1:])
 
 if __name__ == '__main__':
-    main(sys.argv)
+    #main(sys.argv)
+    main(("","pow(3,2)"))

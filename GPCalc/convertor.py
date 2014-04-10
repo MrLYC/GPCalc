@@ -3,7 +3,7 @@
 # Author: LYC
 # Created: 2014-03-28
 
-import graytokenizer
+import grapetokenizer
 from expelement import ElementTypeEnum
 import operators
 import re
@@ -21,7 +21,6 @@ class Convertor(object):
             #注入点,可改为Decimal,但内置的Decimal不支持与复数运算,因此使用float
             #2014-04-07 实现了一个可自动转换类型的Decimal的子类实现高精度
             if tk.value.endswith("l"):tk.value = tk.value[:-1]
-            tk.value = "%s('%s')" % (Configuration.AutoNumFunc, tk.value)
 
         elif tk.type != ElementTypeEnum.VAR:
             if tk.type == ElementTypeEnum.LBK:
@@ -64,7 +63,7 @@ class Convertor(object):
     def tokenize(cls, exp):
         """获取标记"""
         #获取葡萄表达式的标识符
-        gtk = graytokenizer.GrayToken(exp)
+        gtk = grapetokenizer.GrayToken(exp)
         return map(cls.__replace, gtk())#检查并替换标识符
 
     @classmethod

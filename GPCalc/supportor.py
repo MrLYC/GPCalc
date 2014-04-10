@@ -6,7 +6,6 @@
 import math
 import cmath
 import re
-from gray import Gray
 from gpcalccfg import Configuration
 from collections import deque
 
@@ -164,7 +163,6 @@ class Supporter(object):
         "tail": cls.args2list(lambda l: l[1:]),
         "left": cls.args2list(lambda l: l[:len(l)/2]),
         "right": cls.args2list(lambda l: l[len(l)/2:]),
-        Configuration.AutoNumFunc: cls.autonum,
         }
 
     @staticmethod
@@ -236,15 +234,3 @@ class Supporter(object):
                 else:arr.append(e)
         else:arr.append(arg)
         return tuple(arr)
-
-    @staticmethod
-    def autonum(n_str):
-        """数字字符串"""
-        n_str = str(n_str)
-        if n_str.endswith("j"):
-            return complex(n_str)
-        if n_str.endswith("l"):
-            n_str = n_str[:-1]
-        if n_str.find(".") == -1:
-            n_str += ".0"
-        return Gray(n_str)

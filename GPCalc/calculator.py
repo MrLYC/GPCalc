@@ -11,6 +11,7 @@ import re
 from supportor import *
 from gpcalccfg import Configuration
 from collections import deque
+from grape import autonum
 
 class Calculator(object):
     """
@@ -19,6 +20,7 @@ class Calculator(object):
     def __init__(self, ):
         super(Calculator, self).__init__()
         self._handler = ycpy.YCPY(Supporter.GetApis())#初始化YCPY
+        self._handler.add_api(Configuration.AutoNumFunc, autonum)
 
     def format_exp(self, exp):
         """格式化表达式"""
@@ -29,6 +31,10 @@ class Calculator(object):
         #参考:http://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95
         for tk in fmt_tks:
             if tk.type == ElementTypeEnum.NUM or tk.type == ElementTypeEnum.VAR:
+                #数值类型变为自动类型
+                if tk.type == ElementTypeEnum.NUM:
+                    tk.value = "%s('%s')" % (Configuration.AutoNumFunc, tk.value)
+
                 #数字和变量直接入栈
                 stack.append(str(tk.value))
             elif isinstance(tk.value, operators.Operator):

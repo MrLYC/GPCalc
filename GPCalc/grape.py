@@ -5,7 +5,7 @@
 
 import decimal
 
-def gray_operator(func):
+def grape_operator(func):
     """自动转换"""
     def _(self, o2, *arg, **kw):
         o_type = type(o2)
@@ -20,31 +20,43 @@ def gray_operator(func):
 
         else:res = func(self, o2, *arg, **kw)
 
-        #转换成Gray
+        #转换成Grape
         if isinstance(res, (float, decimal.Decimal, int)):
-            res = Gray(res)
+            res = Grape(res)
 
         return res
     return _
 
-def grayresult(method):
-    """将结果包装成Gray类型"""
+def graperesult(method):
+    """将结果包装成Grape类型"""
     def _(self, *arg, **kw):
-        return Gray(method(self, *arg, **kw))
+        return Grape(method(self, *arg, **kw))
     return _
 
-class GrayType(type):
-    """Gray类的类"""
-    def __init__(cls, name, bases, dct):
-        super(GrayType, cls).__init__(name, bases, dct)
 
-        grayres_lst = (
+def autonum(n_str):
+    """数字字符串"""
+    n_str = str(n_str)
+    if n_str.endswith("j"):
+        return complex(n_str)
+    if n_str.endswith("l"):
+        n_str = n_str[:-1]
+    if n_str.find(".") == -1:
+        n_str += ".0"
+    return Grape(n_str)
+
+class GrapeType(type):
+    """grape类的类"""
+    def __init__(cls, name, bases, dct):
+        super(GrapeType, cls).__init__(name, bases, dct)
+
+        graperes_lst = (
             "__pos__",
             "__neg__",
             "__abs__",
         )
 
-        grayop_lst = (
+        grapeop_lst = (
             "__lt__",
             "__gt__",
             "__le__",
@@ -72,18 +84,18 @@ class GrayType(type):
             "__rdivmod__",
         )
 
-        for n in grayres_lst:
+        for n in graperes_lst:
             method = getattr(cls, n)
-            setattr(cls, n, grayresult(method))
+            setattr(cls, n, graperesult(method))
 
-        for n in grayop_lst:
+        for n in grapeop_lst:
             method = getattr(cls, n)
-            setattr(cls, n, gray_operator(method))
+            setattr(cls, n, grape_operator(method))
 
-class Gray(decimal.Decimal):
+class Grape(decimal.Decimal):
     """
     自动转换的高精度数值
     """
-    __metaclass__ = GrayType
+    __metaclass__ = GrapeType
     def __repr__(self):
         return str(self)

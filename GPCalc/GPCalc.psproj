@@ -38,7 +38,7 @@ FileName=$[Project-Path]convertor.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node1\ChildNodes\Node1]
 ClassName=TProjectFileNode
-FileName=$[Project-Path]graytokenizer.py
+FileName=$[Project-Path]grapetokenizer.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node1\ChildNodes]
 Count=2
@@ -61,7 +61,7 @@ FileName=$[Project-Path]test_expelement.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node2\ChildNodes\Node3]
 ClassName=TProjectFileNode
-FileName=$[Project-Path]test_gray.py
+FileName=$[Project-Path]test_grape.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node2\ChildNodes\Node4]
 ClassName=TProjectFileNode
@@ -84,7 +84,7 @@ FileName=$[Project-Path]expelement.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node3\ChildNodes\Node1]
 ClassName=TProjectFileNode
-FileName=$[Project-Path]gray.py
+FileName=$[Project-Path]grape.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node3\ChildNodes\Node2]
 ClassName=TProjectFileNode
