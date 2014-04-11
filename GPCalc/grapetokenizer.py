@@ -17,14 +17,9 @@ def pretokens(exp):
     for tks in generate_tokens(StringIO(exp).readline):
         tk_t, tk_v = tks[0], tks[1]
 
-        if tk_v.startswith("mod"):
-            t = tk_v[3:]
-            if t:
-                tk_v = t
-                yield "mod"
-
-        tk_v = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk_v)
-        tk_v = Configuration.OctRegex.sub(lambda m:str(int(m.group(0), 8)), tk_v)
+        if tk_t == token.NUMBER:
+            tk_v = Configuration.HexRegex.sub(lambda m:str(int(m.group(0), 16)), tk_v)
+            tk_v = Configuration.OctRegex.sub(lambda m:str(int(m.group(0), 8)), tk_v)
 
         yield tk_v
     raise StopIteration()
