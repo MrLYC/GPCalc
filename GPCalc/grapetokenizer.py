@@ -25,7 +25,7 @@ def pretokens(exp):
     raise StopIteration()
 
 class GrapeToken(object):
-    """词法分析器"""
+    """分析器"""
     def __init__(self, exp):
 
         try:self.context = deque(pretokens(exp))
