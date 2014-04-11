@@ -18,8 +18,6 @@ class Convertor(object):
     def __replace(cls, tk):
         """替换"""
         if tk.type == ElementTypeEnum.NUM:
-            #注入点,可改为Decimal,但内置的Decimal不支持与复数运算,因此使用float
-            #2014-04-07 实现了一个可自动转换类型的Decimal的子类实现高精度
             if tk.value.endswith("l"):tk.value = tk.value[:-1]
 
         elif tk.type != ElementTypeEnum.VAR:
