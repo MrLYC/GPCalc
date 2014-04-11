@@ -164,6 +164,7 @@ class Supporter(object):
         "tail": cls.args2list(lambda l: l[1:]),
         "left": cls.args2list(lambda l: l[:len(l)/2]),
         "right": cls.args2list(lambda l: l[len(l)/2:]),
+        "seek": cls.args2list(cls.__seek),
         }
 
     @staticmethod
@@ -234,6 +235,11 @@ class Supporter(object):
     def __floor(n):
         """取整"""
         return tuple(map(lambda i:grape.autonum(re.sub("\.\d*",".0", str(i))), n))
+
+    @classmethod
+    def __seek(cls, lst):
+        """返回指定下标的元素"""
+        return lst[int(lst[0])]
 
     @staticmethod
     def tuple(arg):
