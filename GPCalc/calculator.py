@@ -4,8 +4,6 @@
 # Created: 2014-04-03
 
 from convertor import Convertor
-from expelement import ElementTypeEnum
-import operators
 import ycpy
 import re
 from supportor import *
