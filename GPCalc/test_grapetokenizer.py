@@ -24,7 +24,7 @@ def test_grapetoken():
     )
 
     for c, r in case:
-        gt = grapetokenizer.grapeToken(c)
+        gt = grapetokenizer.GrapeToken(c)
         res = gt()
 
         t = res[-1]

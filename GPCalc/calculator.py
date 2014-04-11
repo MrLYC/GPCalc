@@ -24,35 +24,7 @@ class Calculator(object):
 
     def format_exp(self, exp):
         """格式化表达式"""
-        fmt_tks = Convertor.format(exp)#获得等价的后缀表达式
-        stack = deque()
-
-        #后缀表达式转换
-        #参考:http://zh.wikipedia.org/wiki/%E9%80%86%E6%B3%A2%E5%85%B0%E8%A1%A8%E7%A4%BA%E6%B3%95
-        for tk in fmt_tks:
-            if tk.type == ElementTypeEnum.NUM or tk.type == ElementTypeEnum.VAR:
-                #数值类型变为自动类型
-                if tk.type == ElementTypeEnum.NUM:
-                    tk.value = "%s('%s')" % (Configuration.AutoNumFunc, tk.value)
-
-                #数字和变量直接入栈
-                stack.append(str(tk.value))
-            elif isinstance(tk.value, operators.Operator):
-                #运算符则出栈opnum(可操作数目)个操作数进行转换
-
-                n = tk.value.opnum
-                if len(stack) < n:raise Exception("not enough operand")
-
-                args = deque()
-                for i in xrange(n):#出栈运算符指定数目的操作数
-                    args.appendleft(stack.pop())
-
-                stack.append(tk.value(*args))#指定操作符转换处理
-
-        l = len(stack)
-        if l < 1:raise Exception("this is a bug, send it to saber000@vip.qq.com please.")
-        elif l == 1:return stack[-1]
-        else:raise Exception("unnecessary operand found")
+        return Convertor.format(exp)#获得等价的Python表达式
 
     def save_var(self, vars, vals):
         """保存变量"""

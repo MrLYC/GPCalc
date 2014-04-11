@@ -65,7 +65,7 @@ def test_grapetoken():
     assert rr[5].type == ElementTypeEnum.BOP
     assert isinstance(rr[5].value, operators.BinaryOperator)
 
-def test_format():
+def test_topostfix():
     case = (
        ("8-(3+2*6)/5+4", "8 3 2 6 * + 5 / - 4 +"),
        ("((5+7)/3*7-(3*2))+(7-3)*3+2*5+4*5+1*6+1*5", "5 7 + 3 / 7 * 3 2 * - 7 3 - 3 * + 2 5 * + 4 5 * + 1 6 * + 1 5 * +"),
@@ -87,7 +87,9 @@ def test_format():
     )
 
     for c, r in case:
-        rr = Convertor.format(c)
+        exp = Convertor.preprocessing(c)
+        gtk = Convertor.tokenize(exp)
+        rr = Convertor.topostfix(gtk)
         assert " ".join(map(str, rr)) == r
 #-------------------------------------------------------------------------------
 
