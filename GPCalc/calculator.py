@@ -109,7 +109,7 @@ class Calculator(object):
 
         if r.imag == 0:raise Exception("could not solve this equation")
 
-        r = -r.real/r.imag#实部除以虚部并取反
+        r = autonum(-r.real/r.imag)#实部除以虚部并取反
 
         #保存结果
         self.save_vars((Configuration.AnswerConstant,), (r,))
