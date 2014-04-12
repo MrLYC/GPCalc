@@ -34,9 +34,14 @@ def graperesult(method):
     return _
 
 
-def autonum(n_str):
+def autonum(num):
     """智能数字工厂"""
-    n_str = str(n_str)
+    if isinstance(num, tuple):
+        return tuple(autonum(n) for n in num)
+    if isinstance(num, (complex, Grape)):
+        return num
+
+    n_str = str(num)
     if n_str.endswith("j"):
         return complex(n_str)
     if n_str.endswith("l"):
