@@ -24,15 +24,20 @@ class Calculator(object):
         """格式化表达式"""
         return Convertor.format(exp)#获得等价的Python表达式
 
-    def save_var(self, vars, vals):
+    def save_vars(self, vars, vals):
         """保存变量"""
         vars = ",".join(Convertor.format_usrname(v) for v in vars)
         vals = ",".join(str(v) for v in vals)
 
         self._handler.exec_code("%s = %s" % (vars, vals))
 
-    def del_var(self, vars):
-        """删除变量"""
+    def get_obj(self, name):
+        """获取对象"""
+        name = Convertor.format_usrname(name)
+        return self._handler.Environment.get(name)
+
+    def del_objs(self, vars):
+        """删除对象"""
         vars = ",".join(Convertor.format_usrname(v) for v in vars)
         self._handler.exec_code("del %s" % vars)
 
@@ -83,7 +88,7 @@ class Calculator(object):
         if isinstance(r, tuple):
             r = Supporter.tuple(r)
 
-        self.save_var((Configuration.AnswerConstant,), (r,))#保存结果
+        self.save_vars((Configuration.AnswerConstant,), (r,))#保存结果
         return r, o, e
 
     def equation(self, exp):
@@ -100,7 +105,7 @@ class Calculator(object):
         #将最后结果的复数实部除以虚部并取反就是未知数的值
         e1, e2 = exp.split("=")
         exp = "(%s)-(%s)" % (e1, e2)
-        self.save_var((Configuration.UnknownNumber,), (1j,))#使用复数1j替换未知数
+        self.save_vars((Configuration.UnknownNumber,), (1j,))#使用复数1j替换未知数
         r, o, e = self.eval(exp)
 
         if r.imag == 0:raise Exception("could not solve this equation")
@@ -108,9 +113,9 @@ class Calculator(object):
         r = -r.real/r.imag#实部除以虚部并取反
 
         #保存结果
-        self.save_var((Configuration.AnswerConstant,), (r,))
+        self.save_vars((Configuration.AnswerConstant,), (r,))
         #保存未知数
-        self.save_var((Configuration.UnknownNumber,), (r,))
+        self.save_vars((Configuration.UnknownNumber,), (r,))
         return r, o, e
 
     def def_var(self, exp):
@@ -122,7 +127,7 @@ class Calculator(object):
 
         if m_var:#确保是正确的命名以防被注入
             res, out, err = self.eval(exp)
-            self.save_var((m_var.groups()[0],), (res,))
+            self.save_vars((m_var.groups()[0],), (res,))
             return res, out, err
         raise Exception("illegal var name of %s" % var)
 

@@ -14,21 +14,56 @@ class func_lambda(object):
     """函数类"""
     def __init__(self, exp, hdlr):
         self._handler = hdlr #所属计算器
+        self.busy = False
         self.exp = hdlr.format_exp(exp) #先转换对应的表达式
 
-    def __call__(self, arg_lst = tuple()):
+    def get_val_lst(self, arg_lst):
+        """获取参数名称列表"""
         var_lst = deque(["%s0" % Configuration.VarPrefix])
         var_lst.extend(("%s%d"%(Configuration.VarPrefix,(i+1)) for i in xrange(len(arg_lst))))
+
+        return var_lst
+
+    def save_args(self, arg_lst):
+        """保存参数列表"""
+        var_lst = self.get_val_lst(arg_lst)
 
         val_lst = deque([arg_lst])
         val_lst.extend(arg_lst)
 
-        self._handler.save_var(var_lst, val_lst)#保存参数
+        self._handler.save_vars(var_lst, val_lst)
 
-        r, o, e = self._handler.eval(self.exp, True)
+        return var_lst
 
-        self._handler.del_var(var_lst) #清除变量
+    def del_vars(self, var_lst):
+        """删除参数列表"""
+        self._handler.del_objs(var_lst)
 
+    def backups(self):
+        """备份上次参数列表"""
+        backup = self._handler.get_obj("%s0" % Configuration.VarPrefix)
+        if backup != None:self.del_vars(self.get_val_lst(backup))
+
+        return backup
+
+    def recover(self, backup):
+        """恢复上次参数列表"""
+        if backup != None:
+            self.save_args(backup)
+
+    def __call__(self, arg_lst = tuple()):
+        if self.busy:#避免递归
+            raise Exception("infinite recursion")
+
+        backup = self.backups()#备份上次的参数列表(防止嵌套)
+        var_lst = self.save_args(arg_lst)#保存参数
+
+        self.busy = True
+        r, o, e = self._handler.eval(self.exp, True)#计算已转换为Python形式的表达式
+        self.busy = False
+
+        self.del_vars(var_lst)#清除变量
+        self.recover(backup)#还原上次的参数列表
         if o:
             print o
 
