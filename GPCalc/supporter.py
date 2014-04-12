@@ -187,6 +187,7 @@ class Supporter(object):
         "__h": 6.62606896*math.pow(10,-34),#普朗克常数
         "__g": 6.67428*math.pow(10,-11), #引力常数
         "__f": 96485.309,#法拉第常数
+        "__inf": grape.Grape("Infinity"),#无穷大
         }
 
     @classmethod
