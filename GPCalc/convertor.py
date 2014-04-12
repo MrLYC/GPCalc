@@ -1,5 +1,5 @@
 ﻿# coding: UTF-8
-# Name:表达式的Tokenizer
+# Name:将记号转换为Python表达式的转换器
 # Author: LYC
 # Created: 2014-03-28
 

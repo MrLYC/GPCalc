@@ -35,7 +35,7 @@ def graperesult(method):
 
 
 def autonum(n_str):
-    """数字字符串"""
+    """智能数字工厂"""
     n_str = str(n_str)
     if n_str.endswith("j"):
         return complex(n_str)
@@ -46,7 +46,7 @@ def autonum(n_str):
     return Grape(n_str)
 
 class GrapeType(type):
-    """grape类的类"""
+    """Grape类的元类"""
     def __init__(cls, name, bases, dct):
         super(GrapeType, cls).__init__(name, bases, dct)
 
