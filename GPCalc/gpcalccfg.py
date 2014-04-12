@@ -49,7 +49,7 @@ class OPRegex(object):
 
     UOPRegex = re.compile(r"^(\-|\+|[a-z]\w*)$")
     NUMRegex = re.compile(r"^(\.|\d)+[jl]?$")
-    BOPRegex = re.compile(r"^(\W+|[a-z]+)$")
+    BOPRegex = re.compile(r"^([^\w\(\)\[\]]+|[a-z]+)$")
     VARRegex = re.compile(r"^_[a-z_0-9]+$")
     LBKRegex = re.compile(r"^[\(\[]$")
     RBKRegex = re.compile(r"^[\)\]]$")
