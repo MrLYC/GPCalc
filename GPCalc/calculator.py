@@ -6,7 +6,7 @@
 from convertor import Convertor
 import ycpy
 import re
-from supportor import *
+from supporter import *
 from gpcalccfg import Configuration
 from collections import deque
 from grape import autonum

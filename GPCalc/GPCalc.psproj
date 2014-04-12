@@ -19,7 +19,7 @@ FileName=$[Project-Path]calculator.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node0\ChildNodes\Node1]
 ClassName=TProjectFileNode
-FileName=$[Project-Path]supportor.py
+FileName=$[Project-Path]supporter.py
 
 [Project\ChildNodes\Node0\ChildNodes\Node0\ChildNodes\Node2]
 ClassName=TProjectFileNode
