@@ -26,10 +26,9 @@ class Calculator(object):
 
     def save_vars(self, vars, vals):
         """保存变量"""
-        vars = ",".join(Convertor.format_usrname(v) for v in vars)
-        vals = ",".join(str(v) for v in vals)
-
-        self._handler.exec_code("%s = %s" % (vars, vals))
+        for n, v in zip(vars, vals):
+            n = Convertor.format_usrname(n)
+            self._handler.add_api(n, v)
 
     def get_obj(self, name):
         """获取对象"""

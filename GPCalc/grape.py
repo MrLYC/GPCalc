@@ -5,6 +5,10 @@
 
 import decimal
 
+Infinity = float("inf")#无穷大
+Nnfinity = float("inf")#负无穷大
+NAN = float("nan")#不是一个数值
+
 def grape_operator(func):
     """自动转换"""
     def _(self, o2, *arg, **kw):
@@ -33,13 +37,18 @@ def graperesult(method):
         return Grape(method(self, *arg, **kw))
     return _
 
-
 def autonum(num):
     """智能数字工厂"""
-    if isinstance(num, tuple):
-        return tuple(autonum(n) for n in num)
-    if isinstance(num, (complex, Grape)):
+    if isinstance(num, (complex, Grape)):#复数和Grape直接返回
         return num
+    if isinstance(num, tuple):#数组则对每个元素进行转换
+        return tuple(autonum(n) for n in num)
+    if num == Infinity:#无穷大浮点数
+        return Grape("Infinity")
+    if num == Nnfinity:#负无穷大浮点数
+        return Grape("-Infinity")
+    if num == NAN:
+        return Grape("NAN")
 
     n_str = str(num)
     if n_str.endswith("j"):

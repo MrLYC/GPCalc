@@ -129,8 +129,8 @@ class Supporter(object):
         "tanh": cls.list2args(math.tanh),
 
         "log": cls.list2args(math.log),
-        "log10": cls.list2args(math.log10),
-        "ln": cls.list2args(lambda a: math.log(a)),
+        "log10": cls.list2args(cls.__log10),
+        "ln": cls.list2args(cls.__ln),
 
         "pow": cls.list2args(pow),
         "exp": cls.list2args(math.exp),
@@ -279,7 +279,17 @@ class Supporter(object):
     @classmethod
     def __sqrt(cls, n):
         """开根号"""
-        return n.sqrt()
+        return n.sqrt() if isinstance(n, grape.Grape) else math.sqrt(n)
+
+    @classmethod
+    def __ln(cls, n):
+        """自然对数"""
+        return n.ln() if isinstance(n, grape.Grape) else math.log(n)
+
+    @classmethod
+    def __log10(cls, n):
+        """常用对数"""
+        return n.log10() if isinstance(n, grape.Grape) else math.log10(n)
 
     @staticmethod
     def tuple(arg):
