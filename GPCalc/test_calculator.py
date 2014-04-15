@@ -203,6 +203,7 @@ def test_simple_exp(Calculator_Eval):
         ('18 ^ 3 mod 8 - 14 * 2 + 1', -27),
         ('5 ^ 15 mod 8 * 11 + 16 - 10', 61),
         ('4 ^ 4 mod 19 * 13 - 14 + 9', 112),
+        ('2^3^2', 64),
     )
 
     assert is_equal(Calculator_Eval("pow($$e, 3.8)"), Calculator_Eval("$$e^3.8"))
