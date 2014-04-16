@@ -55,7 +55,7 @@ class UnaryOperator(Operator):
         super(UnaryOperator, self).__init__(original, OPLEVEL.UOP, 1)
 
     def __call__(self, operand):
-        return "(%s(%s))" % (self.original, str(operand))
+        return "%s(%s)" % (self.original, operand)
 
 
 class BinaryOperator(Operator):
@@ -66,15 +66,7 @@ class BinaryOperator(Operator):
         super(BinaryOperator, self).__init__(original, level, 2)
 
     def __call__(self, operand1, operand2):
-        return "((%s) %s (%s))" % (str(operand1), self.original, str(operand2))
-
-class ListOperator(BinaryOperator):
-    """
-    列表运算符
-    """
-    def __call__(self, operand1, operand2):
-
-        return "%s, %s" % (str(operand1), str(operand2))
+        return "(%s %s %s)" % (operand1, self.original, operand2)
 
 def operator_factory(original, unary = False):
     """
@@ -88,7 +80,7 @@ def operator_factory(original, unary = False):
     if original == "-":return BinaryOperator(original, OPLEVEL.SUB)
     if original == "*":return BinaryOperator(original, OPLEVEL.MUL)
     if original == "/":return BinaryOperator(original, OPLEVEL.DIV)
-    if original == ",":return ListOperator(original, OPLEVEL.CMM)
+    if original == ",":return BinaryOperator(original, OPLEVEL.CMM)
     if original == "%":return BinaryOperator(original, OPLEVEL.MOD)
     if original == "**":return BinaryOperator(original, OPLEVEL.POW)
     if original == "mod":return BinaryOperator("%", OPLEVEL.MOD)

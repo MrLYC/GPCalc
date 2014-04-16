@@ -295,7 +295,7 @@ class Supporter(object):
 
     @staticmethod
     def tuple(arg):
-        """参数包装成数组(tuple)"""
+        """参数包装成一维数组(tuple)"""
         arr = deque()
         if isinstance(arg, tuple):
             for e in arg:
