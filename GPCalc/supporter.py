@@ -53,6 +53,7 @@ class func_lambda(object):
 
     def __call__(self, arg_lst = tuple()):
         if self.busy:#避免递归
+            self.busy = False
             raise Exception("infinite recursion")
 
         backup = self.backups()#备份上次的参数列表(防止嵌套)
