@@ -64,7 +64,6 @@ def test_ElementTypeEnum():
 
     types = {
         ElementTypeEnum.BOP: (6,7,8,9,10,11,12,13,16,21,23,28,29),
-        ElementTypeEnum.CMM: (16,),
         ElementTypeEnum.LBK: (17,19),
         ElementTypeEnum.NON: (25,),
         ElementTypeEnum.NUM: (0,1,2,3,4),

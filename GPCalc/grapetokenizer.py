@@ -60,10 +60,7 @@ class GrapeToken(object):
             raise Exception("tokens state error because of error expression")
 
     def next_state(self, tk):
-        if self._try_append(ElementTypeEnum.CMM, tk):
-            self.state = self.init_state
-
-        elif self._try_append(ElementTypeEnum.RBK, tk):
+        if self._try_append(ElementTypeEnum.RBK, tk):
             pass
 
         elif self._try_append(ElementTypeEnum.BOP, tk):

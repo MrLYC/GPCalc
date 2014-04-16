@@ -35,7 +35,6 @@ class ElementTypeEnum(object):
     VAR = ElementType("VAR", OPRegex.VARRegex)#合法变量
     LBK = ElementType("LBK", OPRegex.LBKRegex)#左括号
     RBK = ElementType("RBK", OPRegex.RBKRegex)#右括号
-    CMM = ElementType("CMM", OPRegex.CMMRegex)#逗号
     NUM = ElementType("NUM", OPRegex.NUMRegex)#数字
     NON = ElementType("NON", OPRegex.NONRegex)#无
 

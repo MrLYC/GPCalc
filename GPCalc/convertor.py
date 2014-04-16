@@ -86,7 +86,7 @@ class Convertor(object):
 
                 if tk.type == ETE.RBK:op_stack.pop()#把栈顶的左括号弹出
 
-            if tk.type in (ETE.UOP, ETE.LBK, ETE.CMM, ETE.BOP):
+            if tk.type in (ETE.UOP, ETE.LBK, ETE.BOP):
                 #运算符和左括号直接入运算符栈
                 op_stack.append(tk)
 

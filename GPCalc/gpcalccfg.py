@@ -53,5 +53,4 @@ class OPRegex(object):
     VARRegex = re.compile(r"^_[a-z_0-9]+$")
     LBKRegex = re.compile(r"^[\(\[]$")
     RBKRegex = re.compile(r"^[\)\]]$")
-    CMMRegex = re.compile(r"^,$")
     NONRegex = re.compile(r"^$")
