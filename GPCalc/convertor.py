@@ -45,6 +45,7 @@ class Convertor(object):
 
     @classmethod
     def format_usrname(cls, exp):
+        """格式化用户自定义名称"""
         exp = exp.replace(Configuration.VarPrefix, Configuration.VarRealPrefix)#处理变量
         exp = exp.replace(Configuration.FuncPrefix, Configuration.FuncRealPrefix)#处理函数
         return exp

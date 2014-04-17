@@ -28,6 +28,7 @@ class Calculator(object):
         """保存变量"""
         for n, v in zip(vars, vals):
             n = Convertor.format_usrname(n)
+            #实际成为了YCPY虚拟环境中全局变量
             self._handler.add_api(n, v)
 
     def get_obj(self, name):
@@ -49,7 +50,6 @@ class Calculator(object):
             if exp.find("=") != -1:
                 raise Exception("invalid syntax")
 
-            #实际成为了YCPY虚拟环境中全局变量
             func = Convertor.format_usrname(func)
             lmd = Supporter.args2list(func_lambda(exp, self))#包装自定义函数
             self._handler.add_api(func, lmd)#加入到虚拟空间中
@@ -95,7 +95,6 @@ class Calculator(object):
 
         if exp.find(Configuration.ConstantPrefix) == -1:raise Exception("could not found the unknown number")
 
-        #利用Python的暗黑魔法来求解
         #出自:http://code.activestate.com/recipes/365013-linear-equations-solver-in-3-lines/
         #缺点是只能求解一元一次方程
         #未知数不能位于函数参数处和数组里
