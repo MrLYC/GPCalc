@@ -258,7 +258,7 @@ def test_tuple(Calculator_Xrun):
         ("stdev $x", "stdev(3,4)"),
         ("stdevp(3,4)", "stdevp([3,4])"),
         ("stdevp $x", "stdevp(3,4)"),
-        ("$x:tuple(2)", "$$ans"),
+        ("$x:array(2)", "$$ans"),
         ("rsin 2", "rsin(2)"),
         ("rsin(2)", "rsin((2))"),
         ("rsin $x", "rsin($x)"),

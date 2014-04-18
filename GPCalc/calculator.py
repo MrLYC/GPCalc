@@ -9,7 +9,7 @@ import re
 from supporter import *
 from gpcalccfg import Configuration
 from collections import deque
-from grape import autonum
+from grape import autonum, GrapeArray
 
 class Calculator(object):
     """
@@ -75,7 +75,7 @@ class Calculator(object):
         else:#普通表达式
             res, out, err = self.eval(exp)
 
-        if res == None:res = tuple()
+        if res == None:res = GrapeArray()
         return res, out, err
 
     def eval(self, exp, is_pytype = False):
@@ -85,7 +85,7 @@ class Calculator(object):
         r, o, e = self._handler.eval_exp(exp)
 
         if isinstance(r, tuple):
-            r = Supporter.tuple(r)
+            r = Supporter.array(r)
 
         self.save_vars((Configuration.AnswerConstant,), (r,))#保存结果
         return r, o, e

@@ -104,7 +104,7 @@ def test_grape_as_complex(Grape):
     assert b % a == b % da
     assert b ** a == b ** da
 
-def test_grape_in_tuple(Grape):
+def test_grape_in_array(Grape):
     assert (Grape("0.2"), Grape(5)) == (0.2, 5)
 
 def main():

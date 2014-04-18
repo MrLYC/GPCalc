@@ -10,7 +10,7 @@ def grape_operator(func):
     def _(self, o2, *arg, **kw):
         o_type = type(o2)
 
-        if o_type == tuple:raise Exception("unsupport operand type.")
+        if o_type == GrapeArray:raise Exception("unsupport operand type.")
 
         #decimal不支持与float和complex运算
         if o_type in (float, complex):
@@ -38,7 +38,7 @@ def autonum(num):
     if isinstance(num, (Grape, complex)):#复数和Grape直接返回
         return num
     if isinstance(num, tuple):#数组则对每个元素进行转换
-        return tuple(autonum(n) for n in num)
+        return GrapeArray(autonum(n) for n in num)
 
     n_str = str(num)
     if n_str.endswith("j"):
@@ -110,3 +110,11 @@ class Grape(decimal.Decimal):
 
     def __repr__(self):
         return str(self)
+
+
+class GrapeArray(tuple):
+    """
+    数组
+    """
+    def __str__(self):
+        return "[%s]" % ", ".join(map(str, self))

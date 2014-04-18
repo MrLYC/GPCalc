@@ -51,7 +51,7 @@ class func_lambda(object):
         if backup != None:
             self.save_args(backup)
 
-    def __call__(self, arg_lst = tuple()):
+    def __call__(self, arg_lst = grape.GrapeArray()):
         if self.busy:#避免递归
             self.busy = False
             raise Exception("infinite recursion")
@@ -95,7 +95,7 @@ class Supporter(object):
     def args2list(cls, func):
         """将多参数或嵌套数组打包和降维成一维数组的装饰器"""
         def _(*arg, **kw):
-            return grape.autonum(func(Supporter.tuple(arg), **kw))
+            return grape.autonum(func(Supporter.array(arg), **kw))
 
         return _
 
@@ -103,7 +103,7 @@ class Supporter(object):
     def list2args(cls, func):
         """将数组展开成多个参数列表的装饰器"""
         def _(*arg, **kw):
-            return grape.autonum(func(*Supporter.tuple(arg), **kw))
+            return grape.autonum(func(*Supporter.array(arg), **kw))
 
         return _
 
@@ -179,7 +179,7 @@ class Supporter(object):
     def __const_apis(cls):
         """常量对象"""
         return {
-        "__0": tuple(),#空
+        "__0": grape.GrapeArray(),#空
         "__ans": 1871084291.0,#我的电话
 
         "__e": math.e,#自然底数
@@ -195,9 +195,9 @@ class Supporter(object):
     def __tools_apis(cls):
         """扩展函数"""
         return {
-        "tuple": cls.tuple,
+        "array": cls.array,
         "val": cls.args2list(cls.__val),
-        "head": cls.args2list(lambda l: l[0] if l else tuple()),
+        "head": cls.args2list(lambda l: l[0] if l else grape.GrapeArray()),
         "tail": cls.args2list(lambda l: l[1:]),
         "left": cls.args2list(lambda l: l[:len(l)/2]),
         "right": cls.args2list(lambda l: l[len(l)/2:]),
@@ -271,7 +271,7 @@ class Supporter(object):
     @staticmethod
     def __floor(n):
         """取整"""
-        return tuple(map(lambda i:grape.autonum(re.sub("\.\d*",".0", str(i))), n))
+        return grape.GrapeArray(map(lambda i:grape.autonum(re.sub("\.\d*",".0", str(i))), n))
 
     @classmethod
     def __seek(cls, lst):
@@ -294,13 +294,13 @@ class Supporter(object):
         return n.log10() if isinstance(n, grape.Grape) else math.log10(n)
 
     @staticmethod
-    def tuple(arg):
-        """参数包装成一维数组(tuple)"""
+    def array(arg):
+        """参数包装成一维数组(grape.GrapeArray)"""
         arr = deque()
         if isinstance(arg, tuple):
             for e in arg:
                 if isinstance(e, (list, tuple)):
-                    arr.extend(Supporter.tuple(e))
+                    arr.extend(Supporter.array(e))
                 else:arr.append(grape.autonum(e))
         else:arr.append(arg)
-        return tuple(arr)
+        return grape.GrapeArray(arr)
