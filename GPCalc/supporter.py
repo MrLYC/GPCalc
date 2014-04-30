@@ -143,10 +143,10 @@ class Supporter(object):
 
         "avg": cls.args2list(cls.__avg),
         "sum": cls.args2list(sum),
-        "var": cls.args2list(cls.__var),
-        "stdev": cls.args2list(cls.__stdev),
-        "varp": cls.args2list(cls.__varp),
-        "stdevp": cls.args2list(cls.__stdevp),
+        "varp": cls.args2list(cls.__var),
+        "stdevp": cls.args2list(cls.__stdev),
+        "var": cls.args2list(cls.__varp),
+        "stdev": cls.args2list(cls.__stdevp),
 
         "floor": cls.args2list(cls.__floor),
         "len": cls.args2list(len),
