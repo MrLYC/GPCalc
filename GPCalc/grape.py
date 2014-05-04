@@ -4,6 +4,7 @@
 # Created: 2014-04-06
 
 import decimal
+import re
 
 def grape_operator(func):
     """自动转换"""
@@ -100,11 +101,24 @@ class Grape(decimal.Decimal):
     """
     自动转换的高精度数值
     """
+    _grape_str_regex = re.compile(r"(^0+)|(0+$)")
     __metaclass__ = GrapeType
 
     def __init__(self, data):
         if data == "inf":data = "Infinity"
         elif data == "-inf":data = "-Infinity"
+
+    def __str__(self):
+        s = super(Grape, self).__str__()
+
+        dot_idx = s.find(".")
+        if dot_idx != -1:
+            s = self._grape_str_regex.sub("", s)
+
+        if s.endswith("."):
+            s = s[:-1]
+
+        return s
 
     def __repr__(self):
         return "Grape('%s')" % str(self)
