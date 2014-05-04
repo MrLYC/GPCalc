@@ -135,7 +135,7 @@ class Supporter(object):
 
         "pow": cls.list2args(pow),
         "exp": cls.list2args(math.exp),
-        "fact": cls.list2args(math.factorial),
+        "fact": cls.list2args(cls.__fact),
         "mod": cls.list2args(lambda a, b: a % b),
         "sqrt": cls.list2args(cls.__sqrt),
         "cuberoot": cls.list2args(cls.__cuberoot),
@@ -246,6 +246,12 @@ class Supporter(object):
     def __stdev(l):
         """集合的总体标准偏差"""
         return math.sqrt(Supporter.__var(l))
+
+    @staticmethod
+    def __fact(x):
+        """阶乘"""
+        if float(x % 1):return math.gamma(x+1)
+        return math.factorial(x)
 
     @staticmethod
     def __real(n):
