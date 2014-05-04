@@ -108,18 +108,6 @@ class Grape(decimal.Decimal):
         if data == "inf":data = "Infinity"
         elif data == "-inf":data = "-Infinity"
 
-    def __str__(self):
-        s = super(Grape, self).__str__()
-
-        dot_idx = s.find(".")
-        if dot_idx != -1:
-            s = self._grape_str_regex.sub("", s)
-
-        if s.endswith("."):
-            s = s[:-1]
-
-        return s
-
     def __repr__(self):
         return "Grape('%s')" % str(self)
 

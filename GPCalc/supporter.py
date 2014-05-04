@@ -143,10 +143,10 @@ class Supporter(object):
 
         "avg": cls.args2list(cls.__avg),
         "sum": cls.args2list(sum),
-        "varp": cls.args2list(cls.__var),
-        "stdevp": cls.args2list(cls.__stdev),
-        "var": cls.args2list(cls.__varp),
-        "stdev": cls.args2list(cls.__stdevp),
+        "varp": cls.args2list(cls.__varp),
+        "stdevp": cls.args2list(cls.__stdevp),
+        "var": cls.args2list(cls.__var),
+        "stdev": cls.args2list(cls.__stdev),
 
         "floor": cls.args2list(cls.__floor),
         "len": cls.args2list(len),
@@ -220,7 +220,7 @@ class Supporter(object):
         return sum(l) / len(l)
 
     @staticmethod
-    def __var(l):
+    def __varp(l):
         """集合的估算方差"""
         n = len(l)
         avg = Supporter.__avg(l)
@@ -229,12 +229,12 @@ class Supporter(object):
         return reduce(lambda s, i:s + (i - avg) ** 2, l, 0.0) / n
 
     @staticmethod
-    def __stdev(l):
+    def __stdevp(l):
         """集合的估算标准差"""
-        return math.sqrt(Supporter.__var(l))
+        return math.sqrt(Supporter.__varp(l))
 
     @staticmethod
-    def __varp(l):
+    def __var(l):
         """集合的总体方差"""
         n = len(l)
         avg = Supporter.__avg(l)
@@ -243,9 +243,9 @@ class Supporter(object):
         return reduce(lambda s, i:s + (i - avg) ** 2, l, 0.0) / (n - 1)
 
     @staticmethod
-    def __stdevp(l):
+    def __stdev(l):
         """集合的总体标准偏差"""
-        return math.sqrt(Supporter.__varp(l))
+        return math.sqrt(Supporter.__var(l))
 
     @staticmethod
     def __real(n):
