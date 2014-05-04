@@ -106,10 +106,8 @@ class Grape(decimal.Decimal):
         if data == "inf":data = "Infinity"
         elif data == "-inf":data = "-Infinity"
 
-        super(Grape, self).__init__(data)
-
     def __repr__(self):
-        return str(self)
+        return "Grape('%s')" % str(self)
 
 
 class GrapeArray(tuple):
